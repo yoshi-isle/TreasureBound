@@ -6,7 +6,7 @@ public class FirstPersonController : MonoBehaviour
     public float moveSpeed = 5f;
     public float mouseSensitivity = 2f;
     public float maxLookAngle = 80f;
-
+    public float jumpHeight = 1.5f;
     private CharacterController characterController;
     private Transform cameraTransform;
     private float verticalLookRotation = 0f;
@@ -14,8 +14,9 @@ public class FirstPersonController : MonoBehaviour
     public float stamina = 100f;
     private bool isSprinting = false;
     private bool staminaRecharging = false;
-    private float staminaRechargeTimer = 10f;
-
+    private float staminaRechargeTimer = 2f;
+    private bool groundedPlayer;
+    private Vector3 playerVelocity;
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -43,10 +44,41 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
+    private void ResetStaminaRechargeTimer()
+    {
+        staminaRecharging = false;
+        staminaRechargeTimer = 2f;
+    }
+
     void HandleMovement()
     {
+        groundedPlayer = characterController.isGrounded;
+        
+        // Debug the grounded state
+        Debug.Log($"Grounded: {groundedPlayer}, Velocity Y: {playerVelocity.y}");
+        
+        if (groundedPlayer && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && groundedPlayer)
+        {
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
+            Debug.Log("Jump triggered!");
+        }
+
+        playerVelocity.y += Physics.gravity.y * Time.deltaTime;
+
+        print(stamina);
         isSprinting = Input.GetKey(KeyCode.LeftShift) && stamina > 0;
         float currentSpeed = isSprinting ? moveSpeed * 2 : moveSpeed;
+
+        if (isSprinting)
+        {
+            ResetStaminaRechargeTimer();
+        }
+
         if (!isSprinting && stamina < 100f && !staminaRecharging)
         {
             staminaRechargeTimer -= Time.deltaTime;
@@ -55,13 +87,17 @@ public class FirstPersonController : MonoBehaviour
         if (staminaRechargeTimer <= 0)
         {
             staminaRecharging = true;
+        }
+
+        if (staminaRecharging)
+        {
             stamina += 20f * Time.deltaTime;
             staminaRechargeTimer = 10f;
         }
 
         if (stamina >= 100f)
         {
-            staminaRecharging = false;
+            ResetStaminaRechargeTimer();
         }
 
         float moveX = Input.GetAxis("Horizontal");
@@ -70,11 +106,13 @@ public class FirstPersonController : MonoBehaviour
 
         if (move.magnitude > 1f)
         {
-            cameraTransform.GetComponent<Camera>().fieldOfView = Mathf.Lerp(cameraTransform.GetComponent<Camera>().fieldOfView, isSprinting ? 80f : 60f, Time.deltaTime * 5f);
+            cameraTransform.GetComponent<Camera>().fieldOfView = Mathf.Lerp(cameraTransform.GetComponent<Camera>().fieldOfView, isSprinting ? 85f : 60f, Time.deltaTime * 3f);
             stamina -= isSprinting ? 30f * Time.deltaTime : 0;
         }
 
-        characterController.Move(move * currentSpeed * Time.deltaTime);
+        // Combine horizontal movement with vertical velocity
+        Vector3 finalMovement = move * currentSpeed * Time.deltaTime + playerVelocity * Time.deltaTime;
+        characterController.Move(finalMovement);
     }
 
     void HandleMouseLook()
