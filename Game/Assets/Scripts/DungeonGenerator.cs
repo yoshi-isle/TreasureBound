@@ -242,12 +242,4 @@ public class DungeonGenerator : MonoBehaviour
         rooms.Clear();
         rooms.Add(new Room { startX = 0, startY = 0, width = width, height = height });
     }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            GenerateMap();
-        }
-    }
 }

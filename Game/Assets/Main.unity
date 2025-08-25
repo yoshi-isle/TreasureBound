@@ -306,7 +306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 127040828}
-  - component: {fileID: 127040827}
+  - component: {fileID: 127040829}
   m_Layer: 0
   m_Name: Dungeon Generator
   m_TagString: Untagged
@@ -314,24 +314,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &127040827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127040826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05e2165898aff41cda5daa4cafb25e24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DungeonGenerator
-  width: 100
-  height: 100
-  numberOfPartitions: 9
-  corridorWidth: 2
-  wallPrefab: {fileID: 6766942641457620555, guid: 56a3a930fb77f45388a5f2d5ee304d57, type: 3}
-  playerPrefab: {fileID: 9076847997489947279, guid: fce52a06d961a4ce1b81c3b8be153ef2, type: 3}
 --- !u!4 &127040828
 Transform:
   m_ObjectHideFlags: 0
@@ -347,6 +329,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &127040829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127040826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e2165898aff41cda5daa4cafb25e24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DungeonGenerator
+  width: 40
+  height: 40
+  numberOfPartitions: 10
+  corridorWidth: 2
+  wallPrefab: {fileID: 6766942641457620555, guid: 56a3a930fb77f45388a5f2d5ee304d57, type: 3}
+  playerPrefab: {fileID: 9076847997489947279, guid: fce52a06d961a4ce1b81c3b8be153ef2, type: 3}
 --- !u!1 &140669575 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7de6ec96364cf4562aaa5bbf812268e9, type: 3}
@@ -534,7 +534,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 50, y: 0, z: 50}
-  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_LocalScale: {x: 50, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1243,6 +1243,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Collectable
   Name: Pot
   Weight: 1.2
+--- !u!1 &754690455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 754690457}
+  - component: {fileID: 754690456}
+  m_Layer: 0
+  m_Name: Pause Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &754690456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754690455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 284722911638980449a75e65e18dc8b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseManager
+  gameState: 0
+  mainGameCanvas: {fileID: 2097231771}
+  pauseMenuCanvas: {fileID: 90889752}
+--- !u!4 &754690457
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754690455}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 922.59143, y: 387.4942, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &810040111
 GameObject:
   m_ObjectHideFlags: 0
@@ -2004,9 +2051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e396460fce247879431aace90836f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  gameState: 0
-  mainGameCanvas: {fileID: 2097231771}
-  pauseMenuCanvas: {fileID: 90889752}
 --- !u!4 &1387089845
 Transform:
   m_ObjectHideFlags: 0
@@ -2546,3 +2590,4 @@ SceneRoots:
   - {fileID: 1387089845}
   - {fileID: 2097231772}
   - {fileID: 90889753}
+  - {fileID: 754690457}
