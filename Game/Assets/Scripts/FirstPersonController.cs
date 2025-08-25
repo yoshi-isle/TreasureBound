@@ -50,7 +50,7 @@ public class FirstPersonController : MonoBehaviour
     void Scan()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        
+
         if (Physics.Raycast(ray, out RaycastHit hit, 2f))
         {
             Collectable collectable = hit.collider.GetComponent<Collectable>();
@@ -67,6 +67,14 @@ public class FirstPersonController : MonoBehaviour
                     GameManager.Instance?.TriggerCollectableUnfocused();
                     currentCollectableFocused = null;
                 }
+            }
+        }
+        else
+        {
+            if (currentCollectableFocused != null)
+            {
+                GameManager.Instance?.TriggerCollectableUnfocused();
+                currentCollectableFocused = null;
             }
         }
     }
@@ -124,7 +132,7 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
-        float fovTarget = isSprinting ? 80f : 60f;
+        float fovTarget = isSprinting ? 110f : 60f;
         Camera cam = cameraTransform.GetComponent<Camera>();
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fovTarget, Time.deltaTime * 7f);
 

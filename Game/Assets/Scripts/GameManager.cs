@@ -23,12 +23,14 @@ public class GameManager : MonoBehaviour
     public event System.Action<Collectable, Vector3> OnCollectableFocused;
     public event System.Action OnCollectableUnfocused;
 
-    public void TriggerCollectableFocused(Collectable Collectable, Vector3 hitPoint)
+    public void TriggerCollectableFocused(Collectable collectable, Vector3 hitPoint)
     {
-        OnCollectableFocused?.Invoke(Collectable, hitPoint);
+        print("Focused");
+        OnCollectableFocused?.Invoke(collectable, hitPoint);
     }
     public void TriggerCollectableUnfocused()
     {
+        print("Unfocused");
         OnCollectableUnfocused?.Invoke();
     }
 }
