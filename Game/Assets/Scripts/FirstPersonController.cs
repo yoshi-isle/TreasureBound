@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FirstPersonController : MonoBehaviour
@@ -17,6 +18,7 @@ public class FirstPersonController : MonoBehaviour
     private float staminaRechargeTimer = 2f;
     private bool groundedPlayer;
     private Vector3 playerVelocity;
+    public Collectible currentCollectibleFocused;
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -39,8 +41,23 @@ public class FirstPersonController : MonoBehaviour
     void Scan()
     {
         RaycastHit hit;
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 20f))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 20f))
         {
+            Collectible collectible = hit.collider.GetComponent<Collectible>();
+            if (collectible != null)
+            {
+                currentCollectibleFocused = collectible;
+                GameManager.Instance?.TriggerCollectibleFocused(collectible, hit.point);
+            }
+            else
+            {
+                if (currentCollectibleFocused != null)
+                {
+                    GameManager.Instance?.TriggerCollectibleUnfocused();
+                    currentCollectibleFocused = null;
+                }
+            }
         }
     }
 
@@ -54,9 +71,6 @@ public class FirstPersonController : MonoBehaviour
     {
         groundedPlayer = characterController.isGrounded;
         
-        // Debug the grounded state
-        Debug.Log($"Grounded: {groundedPlayer}, Velocity Y: {playerVelocity.y}");
-        
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
@@ -65,12 +79,10 @@ public class FirstPersonController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && groundedPlayer)
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
-            Debug.Log("Jump triggered!");
         }
 
         playerVelocity.y += Physics.gravity.y * Time.deltaTime;
 
-        print(stamina);
         isSprinting = Input.GetKey(KeyCode.LeftShift) && stamina > 0;
         float currentSpeed = isSprinting ? moveSpeed * 2 : moveSpeed;
 
