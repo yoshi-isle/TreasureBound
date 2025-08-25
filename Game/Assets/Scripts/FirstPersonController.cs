@@ -16,7 +16,6 @@ public class FirstPersonController : MonoBehaviour
     private bool isSprinting = false;
     private bool staminaRecharging = false;
     private float staminaRechargeTimer = 2f;
-    private bool groundedPlayer;
     private Vector3 playerVelocity;
     public Collectable currentCollectableFocused;
     void Start()
@@ -50,18 +49,19 @@ public class FirstPersonController : MonoBehaviour
 
     void Scan()
     {
-        RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, 20f))
+        
+        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
         {
-            Collectable Collectable = hit.collider.GetComponent<Collectable>();
-            if (Collectable != null)
+            Collectable collectable = hit.collider.GetComponent<Collectable>();
+            if (collectable != null)
             {
-                currentCollectableFocused = Collectable;
-                GameManager.Instance?.TriggerCollectableFocused(Collectable, hit.point);
+                currentCollectableFocused = collectable;
+                GameManager.Instance?.TriggerCollectableFocused(collectable, hit.point);
             }
             else
             {
+                // If we had a collectable before, trigger the unfocused event
                 if (currentCollectableFocused != null)
                 {
                     GameManager.Instance?.TriggerCollectableUnfocused();
@@ -73,21 +73,24 @@ public class FirstPersonController : MonoBehaviour
  
     void HandleMovement()
     {
-        groundedPlayer = characterController.isGrounded;
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveZ = Input.GetAxisRaw("Vertical");
-        Vector3 inputDir = new Vector3(moveX, 0, moveZ).normalized;
+        Vector3 inputDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
         Vector3 move = transform.TransformDirection(inputDir);
 
-        bool wantsToSprint = Input.GetKey(KeyCode.LeftShift) && inputDir.magnitude > 0.1f && stamina > 0.1f;
-        isSprinting = wantsToSprint && groundedPlayer;
+        bool movingForward = inputDir.z > 0.1f && Mathf.Abs(inputDir.x) < 0.1f;
+        bool wantsToSprint = Input.GetKey(KeyCode.LeftShift) && movingForward && stamina > 0.1f;
+        if (characterController.isGrounded)
+        {
+            isSprinting = wantsToSprint;
+        }
         float targetSpeed = isSprinting ? moveSpeed * 1.7f : moveSpeed;
 
-        if (groundedPlayer && playerVelocity.y < 0)
+        if (characterController.isGrounded && playerVelocity.y < 0)
             playerVelocity.y = -2f;
 
-        if (Input.GetKeyDown(KeyCode.Space) && groundedPlayer)
+        if (Input.GetKeyDown(KeyCode.Space) && characterController.isGrounded)
+        {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
+        }
 
         playerVelocity.y += Physics.gravity.y * Time.deltaTime;
 

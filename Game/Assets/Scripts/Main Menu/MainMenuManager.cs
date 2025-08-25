@@ -1,9 +1,7 @@
 using UnityEngine.UI;
 using UnityEngine;
-using System;
 using TMPro;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
