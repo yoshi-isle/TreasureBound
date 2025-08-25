@@ -33,9 +33,18 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
-        HandleMouseLook();
-        Scan();
+        switch (GameManager.Instance.gameState)
+        {
+            case GameManager.GameState.Normal:
+                HandleMovement();
+                HandleMouseLook();
+                Scan();
+                break;
+            case GameManager.GameState.Paused:
+                return;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     void Scan()

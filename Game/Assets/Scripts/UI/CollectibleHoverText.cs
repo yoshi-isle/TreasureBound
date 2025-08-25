@@ -16,8 +16,6 @@ public class CollectibleHoverText : MonoBehaviour
             weightDisplayUGUI.gameObject.SetActive(value);
         }
     }
-    private Vector3 worldPosition;
-    private Collectible currentCollectible;
     public TextMeshProUGUI textMeshProUGUI;
     public TextMeshProUGUI weightDisplayUGUI;
 
@@ -52,8 +50,7 @@ public class CollectibleHoverText : MonoBehaviour
     private void HandleCollectibleFocused(Collectible collectible, Vector3 hitPoint)
     {
         isVisible = true;
-        currentCollectible = collectible;
-        textMeshProUGUI.text = $"Pick up: <color=yellow>{collectible.Name}</color>";
-        weightDisplayUGUI.text = $"Weight: {collectible.Weight:F1} kg";
+        textMeshProUGUI.text = $"<sprite name=Key_E> Pick up: <color=yellow>{collectible.Name}</color>";
+        weightDisplayUGUI.text = $"{collectible.Weight:F1} kg";
     }
 }
