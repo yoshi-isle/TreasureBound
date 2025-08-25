@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class FirstPersonController : MonoBehaviour
@@ -18,6 +19,12 @@ public class FirstPersonController : MonoBehaviour
     private float staminaRechargeTimer = 2f;
     private Vector3 playerVelocity;
     public Collectable currentCollectableFocused;
+    Inventory inventory;
+
+    void Awake()
+    {
+        inventory = GetComponent<Inventory>();
+    }
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -32,13 +39,13 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
-        print(GameManager.Instance.CurrentSaveData.CurrentXP);
         switch (PauseManager.Instance.gameState)
         {
             case PauseManager.GameState.Normal:
                 HandleMovement();
                 HandleMouseLook();
                 Scan();
+                ListenForActionInputs();
                 break;
             case PauseManager.GameState.Paused:
                 return;
@@ -47,11 +54,30 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
+    private void ListenForActionInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (currentCollectableFocused != null)
+            {
+                GameManager.Instance?.TriggerCollectableUnfocused();
+                currentCollectableFocused.Collect();
+                GameManager.Instance?.TriggerCollectablePickedUp(currentCollectableFocused);
+                currentCollectableFocused = null;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            print(GetComponent<Inventory>().Bag.First().Name);
+        }
+    }
+
     void Scan()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
+        if (Physics.Raycast(ray, out RaycastHit hit, 8f))
         {
             Collectable collectable = hit.collider.GetComponent<Collectable>();
             if (collectable != null)

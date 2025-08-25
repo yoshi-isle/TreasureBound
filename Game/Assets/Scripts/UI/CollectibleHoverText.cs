@@ -29,14 +29,16 @@ public class CollectableHoverText : MonoBehaviour
         }
     }
 
-    void Update()
+    private void HandleCollectableUnfocused()
     {
+        print("hide it");
+        isVisible = false;
         print(isVisible);
     }
 
-    private void HandleCollectableUnfocused()
+    void Update()
     {
-        isVisible = false;
+        print(isVisible);
     }
 
     void OnDestroy()
