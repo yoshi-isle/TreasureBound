@@ -1,6 +1,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class PauseManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PauseManager : MonoBehaviour
     public GameState gameState = GameState.Normal;
     public Canvas mainGameCanvas;
     public Canvas pauseMenuCanvas;
+    public GameObject pendingItemGrid, pendingItemBox;
 
     void Awake()
     {
@@ -47,6 +49,12 @@ public class PauseManager : MonoBehaviour
                 pauseMenuCanvas.gameObject.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                //TODO - Improve this connection
+                foreach (var pendingItems in FindAnyObjectByType<Inventory>().Bag)
+                {
+                    var itemBox = Instantiate(pendingItemBox, pendingItemGrid.transform);
+                    itemBox.GetComponentInChildren<TextMeshProUGUI>().text = pendingItems.Name;
+                }
                 break;
             case GameState.Paused:
                 gameState = GameState.Normal;
@@ -56,9 +64,14 @@ public class PauseManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 pauseMenuCanvas.gameObject.SetActive(false);
+                foreach (Transform child in pendingItemGrid.transform)
+                {
+                    Destroy(child.gameObject);
+                }
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
+
 }
