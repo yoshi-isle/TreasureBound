@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 0f;
                 mainGameCanvas.gameObject.SetActive(false);
                 pauseMenuCanvas.gameObject.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
+                // Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 break;
             case GameState.Paused:
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1f;
                 mainGameCanvas.gameObject.SetActive(true);
                 pauseMenuCanvas.gameObject.SetActive(false);
-                Cursor.lockState = CursorLockMode.Locked;
+                // Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 pauseMenuCanvas.gameObject.SetActive(false);
                 break;
@@ -61,15 +61,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public event System.Action<Collectible, Vector3> OnCollectibleFocused;
-    public event System.Action OnCollectibleUnfocused;
+    public event System.Action<Collectable, Vector3> OnCollectableFocused;
+    public event System.Action OnCollectableUnfocused;
 
-    public void TriggerCollectibleFocused(Collectible collectible, Vector3 hitPoint)
+    public void TriggerCollectableFocused(Collectable Collectable, Vector3 hitPoint)
     {
-        OnCollectibleFocused?.Invoke(collectible, hitPoint);
+        OnCollectableFocused?.Invoke(Collectable, hitPoint);
     }
-    public void TriggerCollectibleUnfocused()
+    public void TriggerCollectableUnfocused()
     {
-        OnCollectibleUnfocused?.Invoke();
+        OnCollectableUnfocused?.Invoke();
     }
 }

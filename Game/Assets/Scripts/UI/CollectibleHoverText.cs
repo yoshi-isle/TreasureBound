@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class CollectibleHoverText : MonoBehaviour
+public class CollectableHoverText : MonoBehaviour
 {
     private bool isVisible
     {
@@ -24,8 +24,8 @@ public class CollectibleHoverText : MonoBehaviour
         isVisible = false;
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnCollectibleFocused += HandleCollectibleFocused;
-            GameManager.Instance.OnCollectibleUnfocused += HandleCollectibleUnfocused;
+            GameManager.Instance.OnCollectableFocused += HandleCollectableFocused;
+            GameManager.Instance.OnCollectableUnfocused += HandleCollectableUnfocused;
         }
     }
 
@@ -34,7 +34,7 @@ public class CollectibleHoverText : MonoBehaviour
         print(isVisible);
     }
 
-    private void HandleCollectibleUnfocused()
+    private void HandleCollectableUnfocused()
     {
         isVisible = false;
     }
@@ -43,14 +43,14 @@ public class CollectibleHoverText : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnCollectibleFocused -= HandleCollectibleFocused;
+            GameManager.Instance.OnCollectableFocused -= HandleCollectableFocused;
         }
     }
 
-    private void HandleCollectibleFocused(Collectible collectible, Vector3 hitPoint)
+    private void HandleCollectableFocused(Collectable Collectable, Vector3 hitPoint)
     {
         isVisible = true;
-        textMeshProUGUI.text = $"<sprite name=Key_E> Pick up: <color=yellow>{collectible.Name}</color>";
-        weightDisplayUGUI.text = $"{collectible.Weight:F1} kg";
+        textMeshProUGUI.text = $"<sprite name=Key_E> Pick up: <color=yellow>{Collectable.Name}</color>";
+        weightDisplayUGUI.text = $"{Collectable.Weight:F1} kg";
     }
 }

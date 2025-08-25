@@ -18,7 +18,7 @@ public class FirstPersonController : MonoBehaviour
     private float staminaRechargeTimer = 2f;
     private bool groundedPlayer;
     private Vector3 playerVelocity;
-    public Collectible currentCollectibleFocused;
+    public Collectable currentCollectableFocused;
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -53,87 +53,79 @@ public class FirstPersonController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 20f))
         {
-            Collectible collectible = hit.collider.GetComponent<Collectible>();
-            if (collectible != null)
+            Collectable Collectable = hit.collider.GetComponent<Collectable>();
+            if (Collectable != null)
             {
-                currentCollectibleFocused = collectible;
-                GameManager.Instance?.TriggerCollectibleFocused(collectible, hit.point);
+                currentCollectableFocused = Collectable;
+                GameManager.Instance?.TriggerCollectableFocused(Collectable, hit.point);
             }
             else
             {
-                if (currentCollectibleFocused != null)
+                if (currentCollectableFocused != null)
                 {
-                    GameManager.Instance?.TriggerCollectibleUnfocused();
-                    currentCollectibleFocused = null;
+                    GameManager.Instance?.TriggerCollectableUnfocused();
+                    currentCollectableFocused = null;
                 }
             }
         }
     }
-
-    private void ResetStaminaRechargeTimer()
-    {
-        staminaRecharging = false;
-        staminaRechargeTimer = 2f;
-    }
-
+ 
     void HandleMovement()
     {
         groundedPlayer = characterController.isGrounded;
-        
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveZ = Input.GetAxisRaw("Vertical");
+        Vector3 inputDir = new Vector3(moveX, 0, moveZ).normalized;
+        Vector3 move = transform.TransformDirection(inputDir);
+
+        bool wantsToSprint = Input.GetKey(KeyCode.LeftShift) && inputDir.magnitude > 0.1f && stamina > 0.1f;
+        isSprinting = wantsToSprint && groundedPlayer;
+        float targetSpeed = isSprinting ? moveSpeed * 1.7f : moveSpeed;
+
         if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
+            playerVelocity.y = -2f;
 
         if (Input.GetKeyDown(KeyCode.Space) && groundedPlayer)
-        {
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
-        }
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
 
         playerVelocity.y += Physics.gravity.y * Time.deltaTime;
 
-        isSprinting = Input.GetKey(KeyCode.LeftShift) && stamina > 0;
-        float currentSpeed = isSprinting ? moveSpeed * 2 : moveSpeed;
-
         if (isSprinting)
         {
-            ResetStaminaRechargeTimer();
+            stamina -= 25f * Time.deltaTime;
+            if (stamina < 0f) stamina = 0f;
+            staminaRechargeTimer = 1.2f;
+            staminaRecharging = false;
         }
-
-        if (!isSprinting && stamina < 100f && !staminaRecharging)
+        else
         {
-            staminaRechargeTimer -= Time.deltaTime;
+            if (stamina < 100f)
+            {
+                if (!staminaRecharging)
+                {
+                    staminaRechargeTimer -= Time.deltaTime;
+                    if (staminaRechargeTimer <= 0f)
+                        staminaRecharging = true;
+                }
+                if (staminaRecharging)
+                {
+                    stamina += 18f * Time.deltaTime;
+                    if (stamina > 100f) stamina = 100f;
+                }
+            }
+            else
+            {
+                staminaRechargeTimer = 1.2f;
+                staminaRecharging = false;
+            }
         }
 
-        if (staminaRechargeTimer <= 0)
-        {
-            staminaRecharging = true;
-        }
+        float fovTarget = isSprinting ? 80f : 60f;
+        Camera cam = cameraTransform.GetComponent<Camera>();
+        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fovTarget, Time.deltaTime * 7f);
 
-        if (staminaRecharging)
-        {
-            stamina += 20f * Time.deltaTime;
-            staminaRechargeTimer = 10f;
-        }
-
-        if (stamina >= 100f)
-        {
-            ResetStaminaRechargeTimer();
-        }
-
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
-        Vector3 move = transform.right * moveX + transform.forward * moveZ;
-
-        if (move.magnitude > 1f)
-        {
-            cameraTransform.GetComponent<Camera>().fieldOfView = Mathf.Lerp(cameraTransform.GetComponent<Camera>().fieldOfView, isSprinting ? 85f : 60f, Time.deltaTime * 3f);
-            stamina -= isSprinting ? 30f * Time.deltaTime : 0;
-        }
-
-        // Combine horizontal movement with vertical velocity
-        Vector3 finalMovement = move * currentSpeed * Time.deltaTime + playerVelocity * Time.deltaTime;
-        characterController.Move(finalMovement);
+        Vector3 velocity = move * targetSpeed;
+        characterController.Move((velocity + new Vector3(0, playerVelocity.y, 0)) * Time.deltaTime);
     }
 
     void HandleMouseLook()
