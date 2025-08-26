@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 8157130124952933967}
   - component: {fileID: 268513858658327173}
   m_Layer: 0
-  m_Name: Door
+  m_Name: Door Potential Problem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -571,7 +571,7 @@ GameObject:
   - component: {fileID: 7623713133318993538}
   - component: {fileID: 982439374506208323}
   m_Layer: 0
-  m_Name: Door
+  m_Name: Door ok
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

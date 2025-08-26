@@ -36,11 +36,10 @@ public class PrefabDungeonGenerator : MonoBehaviour
             var newRoomRandomSecondConnector = secondConnectors[Random.Range(0, secondConnectors.Length)];
             print($"Picked a random connector! {newRoomRandomSecondConnector.transform.position}");
 
-            newRoomRandomSecondConnector.transform.localScale = new Vector3(2, 2, 2);
-            Vector3 targetForward = -item.forward;
-            Vector3 currentForward = newRoomRandomSecondConnector.forward;
-            Quaternion alignRotation = Quaternion.FromToRotation(currentForward, targetForward);
-            newRoom.transform.rotation = alignRotation;
+            // Align the new room's connector with the original room's connector
+            Quaternion targetRotation = item.rotation * Quaternion.Euler(0, 180f, 0);
+            newRoom.transform.rotation = targetRotation * Quaternion.Inverse(newRoomRandomSecondConnector.localRotation);
+
             Vector3 offset = item.position - newRoomRandomSecondConnector.position;
             newRoom.transform.position += offset;
         }
