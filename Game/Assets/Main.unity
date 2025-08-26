@@ -466,14 +466,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ba2aa6df29fe04b93965425962ffca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrefabDungeonGenerator
-  maxRooms: 40
+  maxRooms: 100
   playerPrefab: {fileID: 9076847997489947279, guid: fce52a06d961a4ce1b81c3b8be153ef2, type: 3}
   deadEndPrefab: {fileID: 8558501653461890567, guid: 8fd148c52401b4641b44117802fabd24, type: 3}
   rooms: []
   roomChanceWeights:
   - room: {fileID: 4410409946524195365, guid: 65496e9999c6ed24ead402c031c740db, type: 3}
     weight: 20
-  - room: {fileID: 5594218648338688365, guid: 45f426b53bcf1f940871bb9caa6662ae, type: 3}
+  - room: {fileID: 4410409946524195365, guid: 43be59ec76d8f45d8bd33fb7ba507dcf, type: 3}
+    weight: 10
+  - room: {fileID: 4410409946524195365, guid: 73b5d359e3ad34ba99f24deb0f8703a3, type: 3}
     weight: 2
 --- !u!1 &198930197
 GameObject:
