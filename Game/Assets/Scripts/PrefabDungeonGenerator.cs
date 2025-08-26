@@ -22,7 +22,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
     {
         //var maxWeight = roomChanceWeights.Sum(rw => rw.weight);
         var initialRoom = Instantiate(roomChanceWeights.First().room, Vector3.zero, Quaternion.identity);
-        Instantiate(playerPrefab, new Vector3(0, 3, 0), Quaternion.identity);
+        Instantiate(playerPrefab, new Vector3(0, 10, 0), Quaternion.identity);
         BranchRoomOut(initialRoom);
     }
 
@@ -40,7 +40,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
             Vector3 targetForward = -item.forward;
             Vector3 currentForward = newRoomRandomSecondConnector.forward;
             Quaternion alignRotation = Quaternion.FromToRotation(currentForward, targetForward);
-            newRoom.transform.rotation = alignRotation * room.transform.rotation;
+            newRoom.transform.rotation = alignRotation;
             Vector3 offset = item.position - newRoomRandomSecondConnector.position;
             newRoom.transform.position += offset;
         }
