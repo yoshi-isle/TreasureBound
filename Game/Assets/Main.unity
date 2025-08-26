@@ -469,6 +469,7 @@ MonoBehaviour:
   maxRooms: 40
   playerPrefab: {fileID: 9076847997489947279, guid: fce52a06d961a4ce1b81c3b8be153ef2, type: 3}
   deadEndPrefab: {fileID: 8558501653461890567, guid: 8fd148c52401b4641b44117802fabd24, type: 3}
+  rooms: []
   roomChanceWeights:
   - room: {fileID: 4410409946524195365, guid: 65496e9999c6ed24ead402c031c740db, type: 3}
     weight: 20
