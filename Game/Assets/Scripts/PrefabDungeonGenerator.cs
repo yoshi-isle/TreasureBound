@@ -30,6 +30,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
     public IEnumerator GenerateDungeonCoroutine()
     {
         var initialRoom = Instantiate(GetRandomRoom(), Vector3.zero, Quaternion.identity);
+        initialRoom.transform.parent = this.transform;
         rooms.Add(initialRoom);
         Instantiate(playerPrefab, new Vector3(0, 10, 0), Quaternion.identity);
         
@@ -87,6 +88,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
             }
             
             rooms.Add(newRoom);
+            newRoom.transform.parent = this.transform;
             
             item.tag = "Processed";
             newRoomRandomConnector.tag = "Processed";
