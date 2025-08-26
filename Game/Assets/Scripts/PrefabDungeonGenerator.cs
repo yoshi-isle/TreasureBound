@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PrefabDungeonGenerator : MonoBehaviour
 {
+    private static WaitForSeconds _waitForSeconds0_1 = new WaitForSeconds(0.02f);
     public int maxRooms;
     public GameObject playerPrefab;
     public GameObject deadEndPrefab;
@@ -90,7 +91,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
             item.tag = "Processed";
             newRoomRandomConnector.tag = "Processed";
             
-            yield return new WaitForSeconds(0.1f);
+            yield return _waitForSeconds0_1;
             
             yield return StartCoroutine(BranchRoomOutCoroutine(newRoom));
         }
