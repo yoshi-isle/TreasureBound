@@ -553,10 +553,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7528736e5a4475dba7ab8b6c8810c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FirstPersonController
-  moveSpeed: 5
+  moveSpeed: 3
   mouseSensitivity: 2
   maxLookAngle: 80
-  jumpHeight: 1.5
+  jumpHeight: 0.9
   hitpoints: 100
   stamina: 100
   currentCollectableFocused: {fileID: 0}
@@ -579,7 +579,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.7
+  m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
