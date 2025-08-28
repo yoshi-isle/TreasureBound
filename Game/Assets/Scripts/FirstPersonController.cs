@@ -163,6 +163,13 @@ public class FirstPersonController : MonoBehaviour
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fovTarget, Time.deltaTime * 7f);
 
         Vector3 velocity = move * targetSpeed;
+        
+        // Reduce air speed for better control
+        if (!characterController.isGrounded)
+        {
+            velocity *= 0.6f; // 60% of ground speed in air
+        }
+        
         characterController.Move((velocity + new Vector3(0, playerVelocity.y, 0)) * Time.deltaTime);
     }
 

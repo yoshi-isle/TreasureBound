@@ -95,13 +95,13 @@ MonoBehaviour:
     m_Value: 0
   top:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 1}
   middle:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
   bottom:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
   gradientDiffusion:
     m_OverrideState: 1
     m_Value: 1
@@ -321,10 +321,10 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.1
   maximumVelocity:
     m_OverrideState: 1
     m_Value: 200
@@ -351,7 +351,7 @@ MonoBehaviour:
     m_Value: 1
   m_SampleCount:
     m_OverrideState: 1
-    m_Value: 8
+    m_Value: 4
 --- !u!114 &-6577985837455448270
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1552,7 +1552,7 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   threshold:
     m_OverrideState: 1
     m_Value: 0
@@ -1576,13 +1576,13 @@ MonoBehaviour:
     m_Value: 1
   m_Resolution:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 4
   m_HighQualityPrefiltering:
     m_OverrideState: 1
     m_Value: 0
   m_HighQualityFiltering:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
 --- !u!114 &1507362752088184568
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1623,7 +1623,7 @@ MonoBehaviour:
   active: 1
   skyType:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 3
   cloudType:
     m_OverrideState: 1
     m_Value: 0

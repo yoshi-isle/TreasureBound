@@ -7,9 +7,10 @@ public class PrefabDungeonGenerator : MonoBehaviour
 {
     private static WaitForSeconds _waitForSeconds0_1 = new WaitForSeconds(0.02f);
     public int maxRooms;
+    public float overlapPercentage = 0.9f;
     public GameObject playerPrefab;
     public GameObject deadEndPrefab;
-
+    public GameObject startRoomPrefab;
     public List<GameObject> rooms = new List<GameObject>();
 
     [SerializeField]
@@ -29,10 +30,10 @@ public class PrefabDungeonGenerator : MonoBehaviour
 
     public IEnumerator GenerateDungeonCoroutine()
     {
-        var initialRoom = Instantiate(GetRandomRoom(), Vector3.zero, Quaternion.identity);
+        var initialRoom = Instantiate(startRoomPrefab, Vector3.zero, Quaternion.identity);
         initialRoom.transform.parent = this.transform;
         rooms.Add(initialRoom);
-        Instantiate(playerPrefab, new Vector3(0, 10, 0), Quaternion.identity);
+        Instantiate(playerPrefab, new Vector3(0, 1, 0), Quaternion.identity);
         
         yield return StartCoroutine(BranchRoomOutCoroutine(initialRoom));
     }
@@ -99,19 +100,35 @@ public class PrefabDungeonGenerator : MonoBehaviour
         }
     }
 
+    Bounds GetRoomBounds(GameObject room)
+    {
+        Renderer[] renderers = room.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0) return new Bounds(room.transform.position, Vector3.zero);
+        Bounds bounds = renderers[0].bounds;
+        for (int i = 1; i < renderers.Length; i++)
+        {
+            bounds.Encapsulate(renderers[i].bounds);
+        }
+        
+        // Shrink bounds by 20% to allow for door connections
+        Vector3 center = bounds.center;
+        Vector3 extents = bounds.extents * overlapPercentage;
+        bounds = new Bounds(center, extents * 2);
+        
+        return bounds;
+    }
+
     bool HasRoomCollision(GameObject newRoom)
     {
-        var newRoomPosition = newRoom.transform.position;
-        var minDistance = 15f;
+        Bounds newBounds = GetRoomBounds(newRoom);
         
         foreach (var existingRoom in rooms)
         {
-            var distance = Vector3.Distance(newRoomPosition, existingRoom.transform.position);
-            print($"Distance between rooms: {distance}");
+            Bounds existingBounds = GetRoomBounds(existingRoom);
             
-            if (distance < minDistance)
+            if (newBounds.Intersects(existingBounds))
             {
-                print($"Rooms too close! Distance: {distance}, minimum required: {minDistance}");
+                print("Room bounds intersect! Collision detected.");
                 return true;
             }
         }
