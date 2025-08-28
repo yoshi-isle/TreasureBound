@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ba2aa6df29fe04b93965425962ffca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrefabDungeonGenerator
-  maxRooms: 35
+  maxRooms: 250
   overlapPercentage: 0.9
   playerPrefab: {fileID: 9076847997489947279, guid: fce52a06d961a4ce1b81c3b8be153ef2, type: 3}
   deadEndPrefab: {fileID: 8558501653461890567, guid: 8fd148c52401b4641b44117802fabd24, type: 3}
@@ -477,7 +477,7 @@ MonoBehaviour:
     weight: 50
   - room: {fileID: 1409892802161866626, guid: 404fa4d920f1a1947a06416052b2270b, type: 3}
     weight: 1
-  - room: {fileID: 7547854814892673092, guid: 1cb79675dee93894cba4f651c0e27413, type: 3}
+  - room: {fileID: 5364031962996117764, guid: 1e889962bf8a60b4d8b78dce3736d326, type: 3}
     weight: 4
   - room: {fileID: 2500337851986639658, guid: 7ef5dd966ae99a0489b693fe3936df3b, type: 3}
     weight: 35
@@ -3113,7 +3113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2097231769
 MonoBehaviour:
   m_ObjectHideFlags: 0
