@@ -78,11 +78,6 @@ public class PrefabDungeonGenerator : MonoBehaviour
 
             Vector3 offset = item.position - newRoomRandomConnector.position;
             newRoom.transform.position += offset;
-            var entitiesContainer = newRoom.GetComponentsInChildren<Transform>(true).FirstOrDefault(x => x.name == "Entities");
-            if (entitiesContainer != null && entitiesContainer.gameObject != null)
-            {
-                entitiesContainer.gameObject.SetActive(true);
-            }
         
             print($"Placing new room at position: {newRoom.transform.position}");
             print($"Connector positions - existing: {item.position}, new: {newRoomRandomConnector.position}, offset: {offset}");

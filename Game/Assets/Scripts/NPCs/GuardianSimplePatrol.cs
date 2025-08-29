@@ -1,111 +1,135 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System;
+using UnityEngine;
 
-public class GuardianSimplePatrol : MonoBehaviour
+public class NpcPatrol : MonoBehaviour
 {
-    List<Transform> patrolPoints;
-    Transform currentPatrolPointTarget;
-    CharacterController characterController;
-    public int walkSpeed;
+    public Transform[] patrolPoints;
+    public float speed = 3f;
+    public float reachDistance = 0.1f;
+    public BoxCollider aggroRange;
+    private Transform playerTransform;
+    private CharacterController characterController;
 
-    PatrolStates currentState = PatrolStates.Patrolling;
-
-    enum PatrolStates
+    private int currentPoint = 0;
+    public enum PatrolState
     {
         Patrolling,
-        PlayerSpotted,
-        Suspicious
+        Suspicious,
+        PlayerFound
     }
-    private int currentIndex = 0;
-    void Awake()
+    public PatrolState State
     {
-        characterController = GetComponent<CharacterController>();
-        SetTargetTransforms();
+        get { return state; }
+        set { state = value; print("Adjusting location"); AdjustTargetLocation(); }
     }
 
-    void SetTargetTransforms()
+    [SerializeField] private PatrolState state = PatrolState.Patrolling;
+
+    void Start()
     {
-        patrolPoints = new List<Transform>();
-        Transform parentRoom = transform.parent.parent;
-        if (parentRoom != null)
+        AdjustTargetLocation();
+        aggroRange = GetComponent<BoxCollider>();
+        characterController = GetComponent<CharacterController>();
+        
+        // Add CharacterController if it doesn't exist
+        if (characterController == null)
         {
-            foreach (Transform child in parentRoom)
-            {
-                if (child.name.Contains("Patrol"))
-                {
-                    patrolPoints.Add(child);
-                    print("Added patrol point: " + child.name);
-                }
-            }
-            if (patrolPoints.Count > 0)
-            {
-                currentIndex = 0;
-                currentPatrolPointTarget = patrolPoints[0];
-            }
+            characterController = gameObject.AddComponent<CharacterController>();
+            characterController.radius = 0.5f;
+            characterController.height = 2f;
         }
     }
 
-    void OnEnable()
+    void OnCollisionEnter(Collision collision)
     {
-        currentState = PatrolStates.Patrolling;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            State = PatrolState.PlayerFound;
+        }
     }
 
     void Update()
     {
-        switch (currentState)
+        switch (state)
         {
-            case PatrolStates.Patrolling:
-                HandlePatrolUpdate();
+            case PatrolState.Patrolling:
+                HandlePatrol();
                 break;
-            case PatrolStates.PlayerSpotted:
-                HandlePlayerSpotted();
+            case PatrolState.Suspicious:
                 break;
-            case PatrolStates.Suspicious:
-                HandleSuspicious();
+            case PatrolState.PlayerFound:
+                HandlePlayerFound();
                 break;
         }
 
     }
 
-    private void HandleSuspicious()
+    private void HandlePlayerFound()
     {
-        print("Method not yet implemented.");
+        Transform target = playerTransform;
+
+        transform.position = Vector3.MoveTowards(
+            new Vector3(transform.position.x, 0, transform.position.z),
+            new Vector3(target.position.x, 0, target.position.z),
+            speed * Time.deltaTime
+        );
     }
 
-    private void HandlePlayerSpotted()
+    private void OnPlayerDetected(GameObject player)
     {
-        print("Method not yet implemented.");
+        playerTransform = player.transform;
+        print("Player detected on the parent level");
+        State = PatrolState.PlayerFound;
     }
 
-    private void HandlePatrolUpdate()
+    private void OnPlayerLost(GameObject player)
     {
-        if (currentPatrolPointTarget != null)
+        if (playerTransform == player.transform)
         {
-            var manhattanDistance = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(currentPatrolPointTarget.position.x, 0, currentPatrolPointTarget.position.z));
-            if (manhattanDistance < 1f)
-            {
-                currentIndex = (currentIndex + 1) % patrolPoints.Count;
-                currentPatrolPointTarget = patrolPoints[currentIndex];
-            }
+            playerTransform = null;
+            print("Player lost on the parent level");
+            State = PatrolState.Suspicious;
+        }
+    }
 
-            Vector3 direction = (currentPatrolPointTarget.position - transform.position).normalized;
+    private void HandlePatrol()
+    {
+        if (patrolPoints == null || patrolPoints.Length == 0) return;
 
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, direction, out hit, 1.5f))
-            {
-                if (hit.transform != currentPatrolPointTarget)
-                {
-                    return;
-                }
-            }
+        Transform target = patrolPoints[currentPoint];
 
-            Vector3 horizontalVelocity = walkSpeed * new Vector3(direction.x, 0, direction.z);
-            if (horizontalVelocity.magnitude > 20)
+        transform.position = Vector3.MoveTowards(
+            new Vector3(transform.position.x, 0, transform.position.z),
+            new Vector3(target.position.x, 0, target.position.z),
+            speed * Time.deltaTime
+        );
+
+        if (Vector3.Distance(transform.position, target.position) < reachDistance)
+        {
+            currentPoint++;
+            if (currentPoint >= patrolPoints.Length)
             {
-                print("Velocity too high: " + horizontalVelocity.magnitude);
+                currentPoint = 0;
             }
-            characterController.SimpleMove(horizontalVelocity);
+        }
+    }
+    
+    private void AdjustTargetLocation()
+    {
+        RaycastHit hit;
+        Vector3 start = transform.position + Vector3.up * 0.5f;
+        Vector3 end = patrolPoints[currentPoint].position + Vector3.up * 0.5f;
+        Vector3 direction = (end - start).normalized;
+        float distance = Vector3.Distance(start, end);
+
+        if (Physics.Raycast(start, direction, out hit, distance))
+        {
+            currentPoint++;
+            if (currentPoint >= patrolPoints.Length)
+            {
+                currentPoint = 0;
+            }
+            return;
         }
     }
 }
