@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1321315166725744685
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8701195746394677987}
+  m_Layer: 0
+  m_Name: Entities
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8701195746394677987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321315166725744685}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 48429962293090729}
+  m_Father: {fileID: 7202537123291206398}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1341369900410970386
 GameObject:
   m_ObjectHideFlags: 0
@@ -16,7 +48,7 @@ GameObject:
   - component: {fileID: 8289441348170847676}
   - component: {fileID: 3963964966782660542}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Guardian
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,12 +62,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1341369900410970386}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.03, y: 1.87, z: -0.83}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.368637, y: 1.89966, z: -4.8156433}
   m_LocalScale: {x: 3.2262466, y: 3.2262466, z: 3.2262466}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6911313893889731187}
+  m_Father: {fileID: 8701195746394677987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3752205674538916239
 MeshFilter:
@@ -178,6 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963b8f5f00217844daffe2fa79ffd670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GuardianSimplePatrol
+  walkSpeed: 5
 --- !u!1 &1358152680166443533
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,38 +335,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7202537123291206398}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4918396159007601834
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6911313893889731187}
-  m_Layer: 0
-  m_Name: Guardian
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6911313893889731187
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4918396159007601834}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.3386383, y: 0.02966, z: -3.9856567}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 48429962293090729}
-  m_Father: {fileID: 7202537123291206398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7241282593602893077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -344,7 +345,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 158.46068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
       propertyPath: m_LocalPosition.y
@@ -352,7 +353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 348.31302
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
       propertyPath: m_LocalRotation.w
@@ -407,9 +408,6 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6911313893889731187}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 9206581684115808179}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
       insertIndex: -1
@@ -420,6 +418,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5522562506149207201}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8701195746394677987}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5cbfb177868a905498d931b1117f1051, type: 3}
       insertIndex: -1

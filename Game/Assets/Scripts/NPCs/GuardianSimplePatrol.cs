@@ -7,6 +7,7 @@ public class GuardianSimplePatrol : MonoBehaviour
     List<Transform> patrolPoints;
     Transform currentPatrolPointTarget;
     CharacterController characterController;
+    public int walkSpeed;
 
     PatrolStates currentState = PatrolStates.Patrolling;
 
@@ -17,9 +18,14 @@ public class GuardianSimplePatrol : MonoBehaviour
         Suspicious
     }
     private int currentIndex = 0;
-    void Start()
+    void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        SetTargetTransforms();
+    }
+
+    void SetTargetTransforms()
+    {
         patrolPoints = new List<Transform>();
         Transform parentRoom = transform.parent.parent;
         if (parentRoom != null)
@@ -29,6 +35,7 @@ public class GuardianSimplePatrol : MonoBehaviour
                 if (child.name.Contains("Patrol"))
                 {
                     patrolPoints.Add(child);
+                    print("Added patrol point: " + child.name);
                 }
             }
             if (patrolPoints.Count > 0)
@@ -37,6 +44,11 @@ public class GuardianSimplePatrol : MonoBehaviour
                 currentPatrolPointTarget = patrolPoints[0];
             }
         }
+    }
+
+    void OnEnable()
+    {
+        currentState = PatrolStates.Patrolling;
     }
 
     void Update()
@@ -88,7 +100,12 @@ public class GuardianSimplePatrol : MonoBehaviour
                 }
             }
 
-            characterController.Move(direction * Time.deltaTime);
+            Vector3 horizontalVelocity = walkSpeed * new Vector3(direction.x, 0, direction.z);
+            if (horizontalVelocity.magnitude > 20)
+            {
+                print("Velocity too high: " + horizontalVelocity.magnitude);
+            }
+            characterController.SimpleMove(horizontalVelocity);
         }
     }
 }
