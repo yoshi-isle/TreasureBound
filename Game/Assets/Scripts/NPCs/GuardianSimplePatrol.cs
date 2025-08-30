@@ -6,11 +6,15 @@ public class NpcPatrol : MonoBehaviour
     public Transform[] patrolPoints;
     public float speed = 3f;
     public float reachDistance = 0.1f;
+    public float waitTime = 1f; // Time to wait at each patrol point
     public BoxCollider aggroRange;
     private Transform playerTransform;
     private CharacterController characterController;
+    private Vector3 moveDirection = Vector3.zero;
 
     private int currentPoint = 0;
+    private float waitTimer = 0f;
+    private bool isWaiting = false;
     public enum PatrolState
     {
         Patrolling,
@@ -20,23 +24,41 @@ public class NpcPatrol : MonoBehaviour
     public PatrolState State
     {
         get { return state; }
-        set { state = value; print("Adjusting location"); AdjustTargetLocation(); }
+        set { state = value; isWaiting = false; print("Adjusting location"); AdjustTargetLocation(); }
     }
 
     [SerializeField] private PatrolState state = PatrolState.Patrolling;
 
     void Start()
     {
-        AdjustTargetLocation();
+        // Disable the script until the room is properly positioned
+        enabled = false;
+        
         aggroRange = GetComponent<BoxCollider>();
         characterController = GetComponent<CharacterController>();
         
-        // Add CharacterController if it doesn't exist
-        if (characterController == null)
+        Invoke("InitializePatrol", 1.0f);
+    }
+
+    private void InitializePatrol()
+    {
+        enabled = true;
+        
+        if (patrolPoints != null && patrolPoints.Length > 0)
         {
-            characterController = gameObject.AddComponent<CharacterController>();
-            characterController.radius = 0.5f;
-            characterController.height = 2f;
+            print($"Found {patrolPoints.Length} patrol points");
+            for (int i = 0; i < patrolPoints.Length; i++)
+            {
+                if (patrolPoints[i] != null)
+                {
+                    print($"Patrol point {i}: {patrolPoints[i].position}");
+                }
+            }
+            AdjustTargetLocation();
+        }
+        else
+        {
+            print("No patrol points found! Guardian will not patrol.");
         }
     }
 
@@ -50,29 +72,45 @@ public class NpcPatrol : MonoBehaviour
 
     void Update()
     {
+        if (characterController.isGrounded)
+        {
+            moveDirection.y = 0;
+        }
+        else
+        {
+            moveDirection.y += Physics.gravity.y * Time.deltaTime;
+        }
+
         switch (state)
         {
             case PatrolState.Patrolling:
                 HandlePatrol();
                 break;
             case PatrolState.Suspicious:
+                HandleSuspicious();
                 break;
             case PatrolState.PlayerFound:
                 HandlePlayerFound();
                 break;
         }
 
+        if (state == PatrolState.Patrolling && isWaiting)
+        {
+            waitTimer -= Time.deltaTime;
+            if (waitTimer <= 0)
+            {
+                isWaiting = false;
+                currentPoint = (currentPoint + 1) % patrolPoints.Length;
+            }
+        }
+
+        characterController.Move(moveDirection * Time.deltaTime);
     }
 
-    private void HandlePlayerFound()
+    private void HandleSuspicious()
     {
-        Transform target = playerTransform;
-
-        transform.position = Vector3.MoveTowards(
-            new Vector3(transform.position.x, 0, transform.position.z),
-            new Vector3(target.position.x, 0, target.position.z),
-            speed * Time.deltaTime
-        );
+        moveDirection.x = 0;
+        moveDirection.z = 0;
     }
 
     private void OnPlayerDetected(GameObject player)
@@ -96,40 +134,74 @@ public class NpcPatrol : MonoBehaviour
     {
         if (patrolPoints == null || patrolPoints.Length == 0) return;
 
+        if (isWaiting)
+        {
+            moveDirection.x = 0;
+            moveDirection.z = 0;
+            return;
+        }
+
         Transform target = patrolPoints[currentPoint];
 
-        transform.position = Vector3.MoveTowards(
-            new Vector3(transform.position.x, 0, transform.position.z),
-            new Vector3(target.position.x, 0, target.position.z),
-            speed * Time.deltaTime
-        );
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0;
 
-        if (Vector3.Distance(transform.position, target.position) < reachDistance)
+        if (direction.magnitude > reachDistance)
         {
-            currentPoint++;
-            if (currentPoint >= patrolPoints.Length)
-            {
-                currentPoint = 0;
-            }
+            moveDirection.x = direction.normalized.x * speed;
+            moveDirection.z = direction.normalized.z * speed;
         }
+        else
+        {
+            // Reached the point, start waiting
+            isWaiting = true;
+            waitTimer = waitTime;
+            moveDirection.x = 0;
+            moveDirection.z = 0;
+        }
+    }
+
+    private void HandlePlayerFound()
+    {
+        transform.LookAt(playerTransform);
+        if (playerTransform == null) return;
+
+        Vector3 direction = playerTransform.position - transform.position;
+        direction.y = 0;
+        moveDirection.x = direction.normalized.x * speed;
+        moveDirection.z = direction.normalized.z * speed;
     }
     
     private void AdjustTargetLocation()
     {
-        RaycastHit hit;
-        Vector3 start = transform.position + Vector3.up * 0.5f;
-        Vector3 end = patrolPoints[currentPoint].position + Vector3.up * 0.5f;
-        Vector3 direction = (end - start).normalized;
-        float distance = Vector3.Distance(start, end);
+        if (patrolPoints == null || patrolPoints.Length == 0) return;
 
-        if (Physics.Raycast(start, direction, out hit, distance))
+        int startingPoint = currentPoint;
+        int checkedPoints = 0;
+
+        while (checkedPoints < patrolPoints.Length)
         {
-            currentPoint++;
-            if (currentPoint >= patrolPoints.Length)
+            RaycastHit hit;
+            Vector3 start = transform.position + Vector3.up * 0.5f;
+            Vector3 end = patrolPoints[currentPoint].position + Vector3.up * 0.5f;
+            Vector3 direction = (end - start).normalized;
+            float distance = Vector3.Distance(start, end);
+
+            // If there's no obstacle to this patrol point, use it
+            if (!Physics.Raycast(start, direction, out hit, distance))
             {
-                currentPoint = 0;
+                print($"Target adjusted to patrol point {currentPoint}");
+                return;
             }
-            return;
+
+            // Try the next point
+            currentPoint = (currentPoint + 1) % patrolPoints.Length;
+            checkedPoints++;
         }
+
+        // If we've checked all points and they all have obstacles, 
+        // just stay at the starting point and let normal patrol handle it
+        currentPoint = startingPoint;
+        print("All patrol points have obstacles, staying at current target");
     }
 }
