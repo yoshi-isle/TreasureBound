@@ -11,7 +11,7 @@ public class NpcPatrol : MonoBehaviour
     private Transform playerTransform;
     private CharacterController characterController;
     private Vector3 moveDirection = Vector3.zero;
-
+    private float susTimer = 0;
     private int currentPoint = 0;
     private float waitTimer = 0f;
     private bool isWaiting = false;
@@ -109,6 +109,12 @@ public class NpcPatrol : MonoBehaviour
 
     private void HandleSuspicious()
     {
+        susTimer += Time.deltaTime;
+        if (susTimer >= 5f)
+        {
+            State = PatrolState.Patrolling;
+            susTimer = 0;
+        }
         moveDirection.x = 0;
         moveDirection.z = 0;
     }

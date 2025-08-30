@@ -34,7 +34,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
         var initialRoom = Instantiate(startRoomPrefab, Vector3.zero, Quaternion.identity);
         initialRoom.transform.parent = this.transform;
         rooms.Add(initialRoom);
-        Instantiate(playerPrefab, new Vector3(0, 2, 0), Quaternion.identity);
+        Instantiate(playerPrefab, new Vector3(0, 3, 0), Quaternion.identity);
         
         yield return StartCoroutine(BranchRoomOutCoroutine(initialRoom));
     }

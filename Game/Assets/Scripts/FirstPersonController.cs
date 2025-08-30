@@ -14,6 +14,7 @@ public class FirstPersonController : MonoBehaviour
     private float verticalLookRotation = 0f;
     public float hitpoints = 100f;
     public float stamina = 100f;
+    public Vector3 cameraOffset = new Vector3(0f, 1.6f, 0f);
     private bool isSprinting = false;
     private bool staminaRecharging = false;
     private float staminaRechargeTimer = 2f;
@@ -28,11 +29,7 @@ public class FirstPersonController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        cameraTransform = transform.Find("Camera");
-        if (cameraTransform == null)
-        {
-            cameraTransform = GetComponentInChildren<Camera>().transform;
-        }
+        cameraTransform = Camera.main.transform;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -173,6 +170,11 @@ public class FirstPersonController : MonoBehaviour
         characterController.Move((velocity + new Vector3(0, playerVelocity.y, 0)) * Time.deltaTime);
     }
 
+    void LateUpdate()
+    {
+        cameraTransform.position = transform.position + transform.TransformVector(cameraOffset);
+    }
+
     void HandleMouseLook()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -180,7 +182,7 @@ public class FirstPersonController : MonoBehaviour
 
         verticalLookRotation -= mouseY;
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, -maxLookAngle, maxLookAngle);
-        cameraTransform.localEulerAngles = new Vector3(verticalLookRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
+        cameraTransform.rotation = Quaternion.Euler(verticalLookRotation, transform.eulerAngles.y, 0f);
     }
 }
