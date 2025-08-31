@@ -31,21 +31,41 @@ public class PrefabDungeonGenerator : MonoBehaviour
 
     public IEnumerator GenerateDungeonCoroutine()
     {
+        if (startRoomPrefab == null)
+        {
+            Debug.LogError("Start room prefab is null or destroyed!");
+            yield break;
+        }
         var initialRoom = Instantiate(startRoomPrefab, Vector3.zero, Quaternion.identity);
         initialRoom.transform.parent = this.transform;
         rooms.Add(initialRoom);
         Instantiate(playerPrefab, new Vector3(0, 3, 0), Quaternion.identity);
         
         yield return StartCoroutine(BranchRoomOutCoroutine(initialRoom));
+
+        foreach (var room in rooms)
+        {
+            var unusedConnectors = room.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
+            foreach (var connector in unusedConnectors)
+            {
+                if (deadEndPrefab != null)
+                {
+                    var deadEnd = Instantiate(deadEndPrefab, connector.position, connector.rotation);
+                    deadEnd.transform.parent = this.transform;
+                }
+            }
+        }
     }
 
     GameObject GetRandomRoom()
     {
-        var totalWeight = roomChanceWeights.Sum(rw => rw.weight);
+        var validWeights = roomChanceWeights.Where(rw => rw.room != null).ToList();
+        if (validWeights.Count == 0) return null;
+        var totalWeight = validWeights.Sum(rw => rw.weight);
         var randomValue = Random.Range(0f, totalWeight);
         
         float currentWeight = 0f;
-        foreach (var roomWeight in roomChanceWeights)
+        foreach (var roomWeight in validWeights)
         {
             currentWeight += roomWeight.weight;
             if (randomValue <= currentWeight)
@@ -53,7 +73,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
                 return roomWeight.room;
             }
         }
-        return roomChanceWeights.First().room;
+        return validWeights.First().room;
     }
 
     IEnumerator BranchRoomOutCoroutine(GameObject room)
@@ -67,7 +87,9 @@ public class PrefabDungeonGenerator : MonoBehaviour
         var connectors = room.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
         foreach (var item in connectors)
         {
-            var newRoom = Instantiate(GetRandomRoom(), Vector3.zero, Quaternion.identity);
+            var roomPrefab = GetRandomRoom();
+            if (roomPrefab == null) continue;
+            var newRoom = Instantiate(roomPrefab, Vector3.zero, Quaternion.identity);
             var newRoomConnectors = newRoom.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
             var newRoomRandomConnector = newRoomConnectors[Random.Range(0, newRoomConnectors.Length)];
             
@@ -78,6 +100,14 @@ public class PrefabDungeonGenerator : MonoBehaviour
 
             Vector3 offset = item.position - newRoomRandomConnector.position;
             newRoom.transform.position += offset;
+            
+            // Add tiny random offset to prevent Z-fighting
+            Vector3 randomOffset = new Vector3(
+                Random.Range(-0.001f, 0.001f), 
+                Random.Range(-0.001f, 0.001f), 
+                Random.Range(-0.001f, 0.001f)
+            );
+            newRoom.transform.position += randomOffset;
         
             print($"Placing new room at position: {newRoom.transform.position}");
             print($"Connector positions - existing: {item.position}, new: {newRoomRandomConnector.position}, offset: {offset}");
