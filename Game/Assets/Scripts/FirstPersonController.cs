@@ -24,6 +24,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Awake()
     {
+        Time.timeScale = 1.0f;
         inventory = GetComponent<Inventory>();
     }
     void Start()
@@ -107,6 +108,7 @@ public class FirstPersonController : MonoBehaviour
         if (other.CompareTag("Hitbox"))
         {
             print("im hit");
+            Time.timeScale = 0f;
             GameManager.Instance.TriggerOnPlayerDead();
         }
     }

@@ -12,6 +12,7 @@ public class Sentinel : MonoBehaviour
     NavMeshAgent agent;
     private int currentPatrolIndex = 0;
     private float susTimer = 0f;
+    private float stateChangeCooldown = 0f;
     public enum States
     {
         Patrolling,
@@ -22,6 +23,8 @@ public class Sentinel : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (stateChangeCooldown >= 0f) return;
+
         if (other.CompareTag("Player"))
         {
             pointLight.color = Color.red;
@@ -32,8 +35,12 @@ public class Sentinel : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        if (currentState != States.Chasing) return;
+
+
         if (other.CompareTag("Player"))
         {
+            stateChangeCooldown = 1f;
             currentState = States.Patrolling;
             target = null;
         }
@@ -49,10 +56,12 @@ public class Sentinel : MonoBehaviour
         switch (currentState)
         {
             case States.Patrolling:
+                agent.speed = 3;
                 if (ReachedDestination())
                 {
                     PatrolNextPoint();
                 }
+                stateChangeCooldown -= Time.deltaTime;
                 pointLight.color = Color.blue;
                 break;
             case States.Chasing:
