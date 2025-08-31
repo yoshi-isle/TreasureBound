@@ -101,7 +101,16 @@ public class FirstPersonController : MonoBehaviour
             }
         }
     }
- 
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Hitbox"))
+        {
+            print("im hit");
+            GameManager.Instance.TriggerOnPlayerDead();
+        }
+    }
+
     void HandleMovement()
     {
         Vector3 inputDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;

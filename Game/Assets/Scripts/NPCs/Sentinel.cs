@@ -1,28 +1,73 @@
 using System;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Sentinel : MonoBehaviour
 {
+    public Light pointLight;
     public Transform target;
     public Transform[] patrolPoints;
     NavMeshAgent agent;
-    private int currentPatrolIndex = 0; // Track current patrol point
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private int currentPatrolIndex = 0;
+    private float susTimer = 0f;
+    public enum States
+    {
+        Patrolling,
+        Chasing,
+        Suspicious
+    }
+    public States currentState = States.Patrolling;
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            pointLight.color = Color.red;
+            currentState = States.Chasing;
+            target = other.transform;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            currentState = States.Patrolling;
+            target = null;
+        }
+    }
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         Invoke("InitializePatrol", 1.0f);
-
     }
 
     void Update()
     {
-        if (ReachedDestination())
+        switch (currentState)
         {
-            // Patrol to the next point
-            PatrolNextPoint();
+            case States.Patrolling:
+                if (ReachedDestination())
+                {
+                    PatrolNextPoint();
+                }
+                pointLight.color = Color.blue;
+                break;
+            case States.Chasing:
+                agent.speed = 5;
+                agent.SetDestination(target.position);
+                break;
+            case States.Suspicious:
+                susTimer += Time.deltaTime;
+                if (susTimer >= 10f)
+                {
+                    currentState = States.Patrolling;
+                    InitializePatrol();
+                    susTimer = 0f;
+                }
+                break;
         }
     }
 

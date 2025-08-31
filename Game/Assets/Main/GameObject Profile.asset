@@ -248,7 +248,7 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 1.5714288
+    m_Value: 7.8168883
   compensation:
     m_OverrideState: 0
     m_Value: 0

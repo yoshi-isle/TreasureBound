@@ -8,8 +8,10 @@ public class PrefabDungeonGenerator : MonoBehaviour
 {
     private static WaitForSeconds _waitForSeconds0_1 = new WaitForSeconds(0.005f);
     public int maxRooms;
+    private int roomCounter;
     public float overlapPercentage = 0.9f;
     public GameObject playerPrefab;
+    GameObject currentPlayerObject;
     public GameObject deadEndPrefab;
     public GameObject startRoomPrefab;
     public List<GameObject> rooms = new List<GameObject>();
@@ -26,6 +28,21 @@ public class PrefabDungeonGenerator : MonoBehaviour
 
     void Start()
     {
+        roomCounter = maxRooms;
+        StartCoroutine(GenerateDungeonCoroutine());
+        GameManager.Instance.OnGameRestart += OnGameRestart;
+    }
+
+    private void OnGameRestart()
+    {
+        StopAllCoroutines();
+        Destroy(currentPlayerObject);
+        foreach (var room in rooms)
+        {
+            Destroy(room);
+        }
+        rooms.Clear();
+        roomCounter = maxRooms;
         StartCoroutine(GenerateDungeonCoroutine());
     }
 
@@ -39,8 +56,8 @@ public class PrefabDungeonGenerator : MonoBehaviour
         var initialRoom = Instantiate(startRoomPrefab, Vector3.zero, Quaternion.identity);
         initialRoom.transform.parent = this.transform;
         rooms.Add(initialRoom);
-        Instantiate(playerPrefab, new Vector3(0, 3, 0), Quaternion.identity);
-        
+        var player = Instantiate(playerPrefab, new Vector3(0, 3, 0), Quaternion.identity);
+        currentPlayerObject = player;
         yield return StartCoroutine(BranchRoomOutCoroutine(initialRoom));
 
         print("done");
@@ -79,8 +96,8 @@ public class PrefabDungeonGenerator : MonoBehaviour
 
     IEnumerator BranchRoomOutCoroutine(GameObject room)
     {
-        maxRooms--;
-        if (maxRooms <= 0)
+        roomCounter--;
+        if (roomCounter <= 0)
         {
             yield break;
         }

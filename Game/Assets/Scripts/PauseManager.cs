@@ -13,9 +13,9 @@ public class PauseManager : MonoBehaviour
         Paused
     }
     public GameState gameState = GameState.Normal;
-    public Canvas mainGameCanvas;
-    public Canvas pauseMenuCanvas;
+    public Canvas mainGameCanvas, pauseMenuCanvas, gameOverCanvas;
     public GameObject pendingItemGrid, pendingItemBox;
+    public Button m_RestartGame;
 
     void Awake()
     {
@@ -28,6 +28,31 @@ public class PauseManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+    }
+
+    void Start()
+    {
+        GameManager.Instance.OnPlayerDead += HandlePlayerDead;
+        m_RestartGame.onClick.AddListener(OnRestartGameButtonPressed);
+
+    }
+
+    private void OnRestartGameButtonPressed()
+    {
+        GameManager.Instance.TriggerOnGameRestart();
+        mainGameCanvas.gameObject.SetActive(true);
+        pauseMenuCanvas.gameObject.SetActive(false);
+        gameOverCanvas.gameObject.SetActive(false);
+    }
+
+    private void HandlePlayerDead()
+    {
+        gameOverCanvas.gameObject.SetActive(true);
+        mainGameCanvas.gameObject.SetActive(false);
+        pauseMenuCanvas.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     void Update()

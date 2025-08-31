@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public event System.Action<Collectable, Vector3> OnCollectableFocused;
     public event System.Action OnCollectableUnfocused;
     public event System.Action<Collectable> OnCollectablePickedUp;
+    public event System.Action OnPlayerDead;
+    public event System.Action OnGameRestart;
 
     public void TriggerCollectableFocused(Collectable collectable, Vector3 hitPoint)
     {
@@ -38,5 +40,15 @@ public class GameManager : MonoBehaviour
     public void TriggerCollectablePickedUp(Collectable collectable)
     {
         OnCollectablePickedUp?.Invoke(collectable);
+    }
+
+    public void TriggerOnPlayerDead()
+    {
+        OnPlayerDead?.Invoke();
+    }
+
+    public void TriggerOnGameRestart()
+    {
+        OnGameRestart?.Invoke();
     }
 }
