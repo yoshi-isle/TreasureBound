@@ -467,7 +467,7 @@ MonoBehaviour:
   maxRooms: 200
   overlapPercentage: 0.9
   playerPrefab: {fileID: 9076847997489947279, guid: fce52a06d961a4ce1b81c3b8be153ef2, type: 3}
-  deadEndPrefab: {fileID: 8558501653461890567, guid: 8fd148c52401b4641b44117802fabd24, type: 3}
+  deadEndPrefab: {fileID: 7168113433511225601, guid: 65ef76e943b780a43a436146632f9d4a, type: 3}
   startRoomPrefab: {fileID: 5364031962996117764, guid: 1e889962bf8a60b4d8b78dce3736d326, type: 3}
   rooms: []
   roomChanceWeights:
@@ -479,8 +479,6 @@ MonoBehaviour:
     weight: 15
   - room: {fileID: 1409892802161866626, guid: 404fa4d920f1a1947a06416052b2270b, type: 3}
     weight: 1
-  - room: {fileID: 1799136739970844503, guid: 65bf3ed5952474952a1c6c83b375427f, type: 3}
-    weight: 2
 --- !u!1 &198930197
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,7 +667,7 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: 0.5984658
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -802,10 +800,10 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 0
-  m_Color: {r: 1, g: 0.88269407, b: 0.8254717, a: 1}
-  m_Intensity: 501.4211
+  m_Color: {r: 1, g: 0.97039664, b: 0.9198113, a: 1}
+  m_Intensity: 259.99524
   m_Range: 153.84
-  m_SpotAngle: 43.210686
+  m_SpotAngle: 167.09393
   m_InnerSpotAngle: 12.790501
   m_CookieSize: 10
   m_Shadows:
