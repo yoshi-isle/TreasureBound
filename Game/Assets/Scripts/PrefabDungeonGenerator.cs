@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PrefabDungeonGenerator : MonoBehaviour
 {
-    private static WaitForSeconds _waitForSeconds0_1 = new WaitForSeconds(0.02f);
+    private static WaitForSeconds _waitForSeconds0_1 = new WaitForSeconds(0.005f);
     public int maxRooms;
     public float overlapPercentage = 0.9f;
     public GameObject playerPrefab;
@@ -43,6 +43,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
         
         yield return StartCoroutine(BranchRoomOutCoroutine(initialRoom));
 
+        print("done");
         foreach (var room in rooms)
         {
             var unusedConnectors = room.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
