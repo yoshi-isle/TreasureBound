@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3219976853857492728}
   - component: {fileID: 2953114961055307121}
   - component: {fileID: 8887571836306931443}
-  - component: {fileID: 8275689855810922004}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -86,7 +85,7 @@ MonoBehaviour:
   hitpoints: 100
   stamina: 100
   cameraOffset: {x: 0, y: 1.6, z: 0}
-  currentCollectableFocused: {fileID: 0}
+  currentInteractableFocused: {fileID: 0}
 --- !u!143 &8887571836306931443
 CharacterController:
   m_ObjectHideFlags: 0
@@ -112,16 +111,3 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8275689855810922004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9076847997489947279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdb5f910f3e51446db008ef91232421b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  Bag: []

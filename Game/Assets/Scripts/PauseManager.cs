@@ -2,6 +2,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using System;
 using TMPro;
+using System.Collections.Generic;
 
 public class PauseManager : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class PauseManager : MonoBehaviour
         Paused
     }
     public GameState gameState = GameState.Normal;
-    public Canvas mainGameCanvas, pauseMenuCanvas, gameOverCanvas;
+    public Canvas mainGameCanvas, pauseMenuCanvas, gameOverCanvas, loadingCanvas;
     public GameObject pendingItemGrid, pendingItemBox;
     public Button m_RestartGame;
 
@@ -34,14 +35,41 @@ public class PauseManager : MonoBehaviour
     void Start()
     {
         GameManager.Instance.OnPlayerDead += HandlePlayerDead;
+        GameManager.Instance.OnDungeonGenerated += HandleDungeonGenerated;
+        GameManager.Instance.OnGameRestart += HandleGameRestart;
+        GameManager.Instance.OnLevelComplete += HandleLevelComplete;
         m_RestartGame.onClick.AddListener(OnRestartGameButtonPressed);
+    }
 
+    private void HandleLevelComplete(List<Interactable> list)
+    {
+        loadingCanvas.gameObject.SetActive(true);
+        mainGameCanvas.gameObject.SetActive(false);
+        pauseMenuCanvas.gameObject.SetActive(false);
+        gameOverCanvas.gameObject.SetActive(false);
+    }
+
+    private void HandleGameRestart()
+    {
+        loadingCanvas.gameObject.SetActive(true);
+        mainGameCanvas.gameObject.SetActive(false);
+        pauseMenuCanvas.gameObject.SetActive(false);
+        gameOverCanvas.gameObject.SetActive(false);
+    }
+
+    private void HandleDungeonGenerated()
+    {
+        loadingCanvas.gameObject.SetActive(false);
+        mainGameCanvas.gameObject.SetActive(true);
+        pauseMenuCanvas.gameObject.SetActive(false);
+        gameOverCanvas.gameObject.SetActive(false);
     }
 
     private void OnRestartGameButtonPressed()
     {
         GameManager.Instance.TriggerOnGameRestart();
-        mainGameCanvas.gameObject.SetActive(true);
+        loadingCanvas.gameObject.SetActive(true);
+        mainGameCanvas.gameObject.SetActive(false);
         pauseMenuCanvas.gameObject.SetActive(false);
         gameOverCanvas.gameObject.SetActive(false);
     }

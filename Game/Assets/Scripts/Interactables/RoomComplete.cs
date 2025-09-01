@@ -5,7 +5,8 @@ public class RoomComplete : Interactable
     public override void Interact()
     {
         base.Interact();
-        GameManager.Instance.TriggerOnGameRestart();
+        var inventory = FindAnyObjectByType<Inventory>();
+        GameManager.Instance.TriggerOnLevelComplete(inventory.Bag);
         gameObject.SetActive(false);
     }
 }

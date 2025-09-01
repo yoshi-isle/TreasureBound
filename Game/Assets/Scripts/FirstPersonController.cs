@@ -20,12 +20,12 @@ public class FirstPersonController : MonoBehaviour
     private float staminaRechargeTimer = 2f;
     private Vector3 playerVelocity;
     public Interactable currentInteractableFocused;
-    Inventory inventory;
+    private Inventory inventory;
 
     void Awake()
     {
         Time.timeScale = 1.0f;
-        inventory = GetComponent<Inventory>();
+        inventory = FindAnyObjectByType<Inventory>();
     }
     void Start()
     {

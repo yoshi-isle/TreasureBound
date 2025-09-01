@@ -32,15 +32,29 @@ public class PrefabDungeonGenerator : MonoBehaviour
         roomCounter = maxRooms;
         StartCoroutine(GenerateDungeonCoroutine());
         GameManager.Instance.OnGameRestart += OnGameRestart;
+        GameManager.Instance.OnLevelComplete += OnLevelComplete;
+    }
+
+    private void OnLevelComplete(List<Interactable> list)
+    {
+        StopAllCoroutines();
+        Destroy(currentPlayerObject);
+        foreach (Transform child in this.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        rooms.Clear();
+        roomCounter = maxRooms;
+        StartCoroutine(GenerateDungeonCoroutine());
     }
 
     private void OnGameRestart()
     {
         StopAllCoroutines();
         Destroy(currentPlayerObject);
-        foreach (var room in rooms)
+        foreach (Transform child in this.transform)
         {
-            Destroy(room);
+            Destroy(child.gameObject);
         }
         rooms.Clear();
         roomCounter = maxRooms;
@@ -62,6 +76,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
         yield return StartCoroutine(BranchRoomOutCoroutine(initialRoom));
         FillEndRooms();
         LockFinalEdges();
+        GameManager.Instance.TriggerOnDungeonGenerated();
     }
 
     private void LockFinalEdges()
