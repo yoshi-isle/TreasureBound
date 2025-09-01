@@ -45,7 +45,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.94717854, g: 0.25943398, b: 1, a: 1}
   m_Intensity: 166.2895
-  m_Range: 14.35
+  m_Range: 6.51
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -516,7 +516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomComplete
   Name: Teleporter
-  PromptText: <color="blue">Complete</color> floor
+  PromptText: <color="yellow">Complete</color> floor
 --- !u!1001 &5094054376909352021
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -584,19 +584,19 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b48d9aa707c10f949b1cad229b728ff8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 0fbcc891f6f254e26ab989bad3f26fa4, type: 2}
+      objectReference: {fileID: 2100000, guid: a7e644bb5527246889bb842a2af72fbd, type: 2}
     - target: {fileID: -7511558181221131132, guid: b48d9aa707c10f949b1cad229b728ff8, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 536fd7d276f76472895afcf734e4a683, type: 2}
+      objectReference: {fileID: 2100000, guid: 24a4081b14698498e82c5f85ed4fd664, type: 2}
     - target: {fileID: -3608590826095796872, guid: b48d9aa707c10f949b1cad229b728ff8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 536fd7d276f76472895afcf734e4a683, type: 2}
+      objectReference: {fileID: 2100000, guid: 24a4081b14698498e82c5f85ed4fd664, type: 2}
     - target: {fileID: -3353851350922131968, guid: b48d9aa707c10f949b1cad229b728ff8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 536fd7d276f76472895afcf734e4a683, type: 2}
+      objectReference: {fileID: 2100000, guid: 24a4081b14698498e82c5f85ed4fd664, type: 2}
     - target: {fileID: -1950733119399844177, guid: b48d9aa707c10f949b1cad229b728ff8, type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.7071068
@@ -616,7 +616,7 @@ PrefabInstance:
     - target: {fileID: -305091885687274788, guid: b48d9aa707c10f949b1cad229b728ff8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 536fd7d276f76472895afcf734e4a683, type: 2}
+      objectReference: {fileID: 2100000, guid: 24a4081b14698498e82c5f85ed4fd664, type: 2}
     - target: {fileID: 418086715792842097, guid: b48d9aa707c10f949b1cad229b728ff8, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068
@@ -636,7 +636,7 @@ PrefabInstance:
     - target: {fileID: 903781129018998227, guid: b48d9aa707c10f949b1cad229b728ff8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 536fd7d276f76472895afcf734e4a683, type: 2}
+      objectReference: {fileID: 2100000, guid: 24a4081b14698498e82c5f85ed4fd664, type: 2}
     - target: {fileID: 919132149155446097, guid: b48d9aa707c10f949b1cad229b728ff8, type: 3}
       propertyPath: m_Name
       value: startroom

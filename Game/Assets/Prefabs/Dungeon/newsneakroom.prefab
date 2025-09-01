@@ -781,6 +781,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2286188881381095369, guid: 1cb79675dee93894cba4f651c0e27413, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0fbcc891f6f254e26ab989bad3f26fa4, type: 2}
     - target: {fileID: 2509308794155576983, guid: 1cb79675dee93894cba4f651c0e27413, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -837,10 +841,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: newsneakroom
       objectReference: {fileID: 0}
+    - target: {fileID: 7562902782941563078, guid: 1cb79675dee93894cba4f651c0e27413, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0fbcc891f6f254e26ab989bad3f26fa4, type: 2}
     - target: {fileID: 8340562635959953809, guid: 1cb79675dee93894cba4f651c0e27413, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 203a4ed6cb3fe4910a378f89e655dd4a, type: 2}
+      objectReference: {fileID: 2100000, guid: 0fbcc891f6f254e26ab989bad3f26fa4, type: 2}
     - target: {fileID: 8391971891400255480, guid: 1cb79675dee93894cba4f651c0e27413, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -993,7 +1001,11 @@ PrefabInstance:
     - target: {fileID: -1461304994638716399, guid: 2cf8f687826994277ad014edb3a6a9fe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 536fd7d276f76472895afcf734e4a683, type: 2}
+      objectReference: {fileID: 2100000, guid: 1b82b40b1527f449fb5af5722404d21f, type: 2}
+    - target: {fileID: -1461304994638716399, guid: 2cf8f687826994277ad014edb3a6a9fe, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c48ba379525bbf44cbc4c65dafdce6b8, type: 2}
     - target: {fileID: -1461304994638716399, guid: 2cf8f687826994277ad014edb3a6a9fe, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
@@ -1103,6 +1115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sentinel
   pointLight: {fileID: 7842985718477383016}
   target: {fileID: 0}
+  interactable: {fileID: 0}
   patrolPoints:
   - {fileID: 2950169549361629445}
   - {fileID: 1030857148454949913}

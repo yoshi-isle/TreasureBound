@@ -1766,10 +1766,10 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.52
+    m_Value: 0.415
   scatter:
     m_OverrideState: 1
-    m_Value: 0.7
+    m_Value: 0.658
   tint:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -2298,7 +2298,7 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 0
   meteringMode:
     m_OverrideState: 1
     m_Value: 2
@@ -2307,13 +2307,13 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 7.2755904
+    m_Value: 7.4452558
   compensation:
     m_OverrideState: 1
     m_Value: 0
   limitMin:
     m_OverrideState: 1
-    m_Value: -1
+    m_Value: -5
   limitMax:
     m_OverrideState: 1
     m_Value: 14
