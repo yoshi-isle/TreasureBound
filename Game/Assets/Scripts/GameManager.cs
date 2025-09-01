@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public PlayerSaveData CurrentSaveData { get; set; } = new PlayerSaveData("local");
+    public int currentFloor = 1;
     void Awake()
     {
         if (Instance == null)
@@ -48,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerOnPlayerDead()
     {
+        currentFloor = 1;
         OnPlayerDead?.Invoke();
     }
 
@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerOnLevelComplete(List<Interactable> interactables)
     {
+        currentFloor++;
         OnLevelComplete?.Invoke(interactables);
     }
 }

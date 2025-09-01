@@ -16,7 +16,8 @@ public class GuaranteedItemSpawn : MonoBehaviour
         if (itemsToSpawn.Count == 0) return;
 
         GameObject itemToSpawn = itemsToSpawn[UnityEngine.Random.Range(0, itemsToSpawn.Count)];
-        Instantiate(itemToSpawn, transform.position, Quaternion.identity);
+        var item = Instantiate(itemToSpawn, transform.position, Quaternion.identity);
+        item.transform.parent = transform;
     }
 
 }
