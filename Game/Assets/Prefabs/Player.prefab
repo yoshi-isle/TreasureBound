@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7528736e5a4475dba7ab8b6c8810c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FirstPersonController
-  moveSpeed: 4
+  moveSpeed: 7
   mouseSensitivity: 2.5
   maxLookAngle: 80
   jumpHeight: 0.9

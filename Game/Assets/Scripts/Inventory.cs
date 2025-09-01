@@ -6,6 +6,7 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         GameManager.Instance.OnCollectablePickedUp += HandleCollectablePickedUp;
+        GameManager.Instance.OnGameRestart += Bag.Clear;
     }
 
     [SerializeField]

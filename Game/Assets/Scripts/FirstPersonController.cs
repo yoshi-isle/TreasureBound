@@ -21,6 +21,13 @@ public class FirstPersonController : MonoBehaviour
     private Vector3 playerVelocity;
     public Interactable currentInteractableFocused;
     private Inventory inventory;
+    public enum PlayerState
+    {
+        Normal,
+        Inactive
+    }
+    public PlayerState playerState = PlayerState.Normal;
+
 
     void Awake()
     {
@@ -29,6 +36,9 @@ public class FirstPersonController : MonoBehaviour
     }
     void Start()
     {
+        GameManager.Instance.OnGameRestart += () => playerState = PlayerState.Normal;
+        GameManager.Instance.OnPlayerDead += () => playerState = PlayerState.Inactive;
+
         characterController = GetComponent<CharacterController>();
         cameraTransform = Camera.main.transform;
         Cursor.lockState = CursorLockMode.Locked;
@@ -40,12 +50,13 @@ public class FirstPersonController : MonoBehaviour
         switch (PauseManager.Instance.gameState)
         {
             case PauseManager.GameState.Normal:
+                playerState = PlayerState.Normal;
                 HandleMovement();
-                HandleMouseLook();
                 Scan();
                 ListenForActionInputs();
                 break;
             case PauseManager.GameState.Paused:
+                playerState = PlayerState.Inactive;
                 return;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -69,7 +80,7 @@ public class FirstPersonController : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 8f))
+        if (Physics.Raycast(ray, out RaycastHit hit, 10f))
         {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
             if (interactable != null)
@@ -160,24 +171,31 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
-        float fovTarget = isSprinting ? 110f : 60f;
-        Camera cam = cameraTransform.GetComponent<Camera>();
-        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fovTarget, Time.deltaTime * 7f);
-
         Vector3 velocity = move * targetSpeed;
-        
-        // Reduce air speed for better control
+        // If airborne, reduce movement speed unless sprint-jumping forward
         if (!characterController.isGrounded)
         {
-            velocity *= 0.6f; // 60% of ground speed in air
+            if (!(isSprinting && inputDir.z > 0.1f && Mathf.Abs(inputDir.x) < 0.1f))
+            {
+            velocity *= 0.6f;
+            }
         }
-        
         characterController.Move((velocity + new Vector3(0, playerVelocity.y, 0)) * Time.deltaTime);
     }
 
     void LateUpdate()
     {
-        cameraTransform.position = transform.position + transform.TransformVector(cameraOffset);
+        switch (playerState)
+        {
+            case PlayerState.Normal:
+                HandleMouseLook();
+                cameraTransform.position = transform.position + transform.TransformVector(cameraOffset);
+                break;
+            case PlayerState.Inactive:
+                break;
+            default:
+                break;
+        }
     }
 
     void HandleMouseLook()

@@ -11,6 +11,7 @@ public class DisplayFloorNumber : MonoBehaviour
     {
         text = GetComponent<TextMeshProUGUI>();
         GameManager.Instance.OnLevelComplete += HandleLevelComplete;
+        GameManager.Instance.OnGameRestart += () => currentLevel = 1;
     }
 
     private void HandleLevelComplete(List<Interactable> list)

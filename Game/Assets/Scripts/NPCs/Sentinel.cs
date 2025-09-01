@@ -40,7 +40,6 @@ public class Sentinel : MonoBehaviour
     }
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
         print("Starting scan coroutine");
         StartCoroutine(ScanForPlayer());
     }
@@ -74,6 +73,7 @@ public class Sentinel : MonoBehaviour
 
     void OnEnable()
     {
+        agent = GetComponent<NavMeshAgent>();
         currentState = States.Patrolling;
         Invoke("InitializePatrol", 1.0f);
     }
@@ -180,7 +180,10 @@ public class Sentinel : MonoBehaviour
 
     private bool ReachedDestination()
     {
-        if (agent.pathPending) return false;
+        if (agent == null)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
         return agent.remainingDistance <= agent.stoppingDistance;
     }
 }

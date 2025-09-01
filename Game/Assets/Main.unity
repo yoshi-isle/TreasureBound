@@ -569,14 +569,14 @@ MonoBehaviour:
   startRoomPrefab: {fileID: 5364031962996117764, guid: 1e889962bf8a60b4d8b78dce3736d326, type: 3}
   rooms: []
   roomChanceWeights:
-  - room: {fileID: 4578506221600808690, guid: 9b76ebc2f1b914f27a6b60fddc5fac60, type: 3}
-    weight: 6
+  - room: {fileID: 1640027785088034680, guid: 6a3304c51ebde4799ae9c1a1b02dfbdc, type: 3}
+    weight: 3
   - room: {fileID: 2500337851986639658, guid: 7ef5dd966ae99a0489b693fe3936df3b, type: 3}
-    weight: 10
+    weight: 3
   - room: {fileID: 5226643468120902408, guid: 31d72a85f9c81474988338ee5590c11b, type: 3}
-    weight: 7
-  - room: {fileID: 1409892802161866626, guid: 404fa4d920f1a1947a06416052b2270b, type: 3}
-    weight: 1
+    weight: 3
+  - room: {fileID: 4578506221600808690, guid: 9b76ebc2f1b914f27a6b60fddc5fac60, type: 3}
+    weight: 3
   endRoomChanceWeights:
   - room: {fileID: 1409892802161866626, guid: 404fa4d920f1a1947a06416052b2270b, type: 3}
     weight: 1
@@ -1040,10 +1040,10 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 0
-  m_Color: {r: 1, g: 0.97039664, b: 0.9198113, a: 1}
-  m_Intensity: 66994.17
+  m_Color: {r: 1, g: 0.9403504, b: 0.7877358, a: 1}
+  m_Intensity: 21364.453
   m_Range: 134.16
-  m_SpotAngle: 47.13543
+  m_SpotAngle: 90.82154
   m_InnerSpotAngle: 12.790501
   m_CookieSize: 10
   m_Shadows:
@@ -1085,7 +1085,7 @@ Light:
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
   m_ColorTemperature: 3129
-  m_UseColorTemperature: 1
+  m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
@@ -3562,7 +3562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearColorMode: 1
+  clearColorMode: 0
   backgroundColorHDR: {r: 0, g: 0, b: 0, a: 0}
   clearDepth: 1
   volumeLayerMask:
