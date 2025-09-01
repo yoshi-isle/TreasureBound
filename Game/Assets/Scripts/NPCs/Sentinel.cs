@@ -9,6 +9,7 @@ public class Sentinel : MonoBehaviour
 {
     public Light pointLight;
     public Transform target;
+    public Interactable interactable;
     public Transform[] patrolPoints;
     NavMeshAgent agent;
     private int currentPatrolIndex = 0;
@@ -155,6 +156,7 @@ public class Sentinel : MonoBehaviour
 
     private bool ReachedDestination()
     {
+        if (agent.pathPending) return false;
         return agent.remainingDistance <= agent.stoppingDistance;
     }
 }

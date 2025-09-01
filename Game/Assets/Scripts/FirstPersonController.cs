@@ -19,7 +19,7 @@ public class FirstPersonController : MonoBehaviour
     private bool staminaRecharging = false;
     private float staminaRechargeTimer = 2f;
     private Vector3 playerVelocity;
-    public Collectable currentCollectableFocused;
+    public Interactable currentInteractableFocused;
     Inventory inventory;
 
     void Awake()
@@ -56,18 +56,12 @@ public class FirstPersonController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (currentCollectableFocused != null)
+            if (currentInteractableFocused != null)
             {
-                GameManager.Instance?.TriggerCollectableUnfocused();
-                currentCollectableFocused.Collect();
-                GameManager.Instance?.TriggerCollectablePickedUp(currentCollectableFocused);
-                currentCollectableFocused = null;
+                GameManager.Instance?.TriggerInteractableUnfocused();
+                currentInteractableFocused.Interact();
+                currentInteractableFocused = null;
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            print(GetComponent<Inventory>().Bag.First().Name);
         }
     }
 
@@ -77,28 +71,28 @@ public class FirstPersonController : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 8f))
         {
-            Collectable collectable = hit.collider.GetComponent<Collectable>();
-            if (collectable != null)
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            if (interactable != null)
             {
-                currentCollectableFocused = collectable;
-                GameManager.Instance?.TriggerCollectableFocused(collectable, hit.point);
+                currentInteractableFocused = interactable;
+                GameManager.Instance?.TriggerInteractableFocused(interactable, hit.point);
             }
             else
             {
                 // If we had a collectable before, trigger the unfocused event
-                if (currentCollectableFocused != null)
+                if (currentInteractableFocused != null)
                 {
-                    GameManager.Instance?.TriggerCollectableUnfocused();
-                    currentCollectableFocused = null;
+                    GameManager.Instance?.TriggerInteractableUnfocused();
+                    currentInteractableFocused = null;
                 }
             }
         }
         else
         {
-            if (currentCollectableFocused != null)
+            if (currentInteractableFocused != null)
             {
-                GameManager.Instance?.TriggerCollectableUnfocused();
-                currentCollectableFocused = null;
+                GameManager.Instance?.TriggerInteractableUnfocused();
+                currentInteractableFocused = null;
             }
         }
     }

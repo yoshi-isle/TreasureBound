@@ -24,12 +24,12 @@ public class CollectableHoverText : MonoBehaviour
         isVisible = false;
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnCollectableFocused += HandleCollectableFocused;
-            GameManager.Instance.OnCollectableUnfocused += HandleCollectableUnfocused;
+            GameManager.Instance.OnInteractableFocused += HandleInteractableFocused;
+            GameManager.Instance.OnInteractableUnfocused += HandleInteractableUnfocused;
         }
     }
 
-    private void HandleCollectableUnfocused()
+    private void HandleInteractableUnfocused()
     {
         print("hide it");
         isVisible = false;
@@ -45,14 +45,14 @@ public class CollectableHoverText : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnCollectableFocused -= HandleCollectableFocused;
+            GameManager.Instance.OnInteractableFocused -= HandleInteractableFocused;
         }
     }
 
-    private void HandleCollectableFocused(Collectable Collectable, Vector3 hitPoint)
+    private void HandleInteractableFocused(Interactable interactable, Vector3 hitPoint)
     {
         isVisible = true;
-        textMeshProUGUI.text = $"<sprite name=Key_E> Pick up: <color=yellow>{Collectable.Name}</color>";
-        weightDisplayUGUI.text = $"{Collectable.Weight:F1} kg";
+        textMeshProUGUI.text = $"{interactable.PromptText}";
+        weightDisplayUGUI.text = $"2 kg";
     }
 }

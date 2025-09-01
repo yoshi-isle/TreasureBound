@@ -20,24 +20,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public event System.Action<Collectable, Vector3> OnCollectableFocused;
-    public event System.Action OnCollectableUnfocused;
-    public event System.Action<Collectable> OnCollectablePickedUp;
+    public event Action<Interactable, Vector3> OnInteractableFocused;
+    public event System.Action OnInteractableUnfocused;
+    public event System.Action<Interactable> OnCollectablePickedUp;
     public event System.Action OnPlayerDead;
     public event System.Action OnGameRestart;
 
-    public void TriggerCollectableFocused(Collectable collectable, Vector3 hitPoint)
+    public void TriggerInteractableFocused(Interactable interactable, Vector3 hitPoint)
     {
         print("Focused");
-        OnCollectableFocused?.Invoke(collectable, hitPoint);
-    }
-    public void TriggerCollectableUnfocused()
-    {
-        print("Unfocused");
-        OnCollectableUnfocused?.Invoke();
+        OnInteractableFocused?.Invoke(interactable, hitPoint);
     }
 
-    public void TriggerCollectablePickedUp(Collectable collectable)
+    public void TriggerInteractableUnfocused()
+    {
+        print("Unfocused");
+        OnInteractableUnfocused?.Invoke();
+    }
+
+    public void TriggerCollectablePickedUp(Interactable collectable)
     {
         OnCollectablePickedUp?.Invoke(collectable);
     }

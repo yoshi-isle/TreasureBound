@@ -82,9 +82,11 @@ public class PrefabDungeonGenerator : MonoBehaviour
 
     private void FillEndRooms()
     {
+        List<GameObject> newRooms = new List<GameObject>();
         foreach (var room in rooms)
         {
-            var unusedConnectors = room.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
+            var unusedConnectors = room.GetComponentsInChildren<Transform>()
+                .Where(x => x.name.Contains("Door") && x.CompareTag("Untagged")).ToArray();
             foreach (var connector in unusedConnectors)
             {
                 var endRoomPrefab = GetRandomEndRoom();
@@ -93,11 +95,12 @@ public class PrefabDungeonGenerator : MonoBehaviour
                     var newRoom = PlaceRoomAtConnector(connector, endRoomPrefab);
                     if (newRoom != null)
                     {
-                        rooms.Add(newRoom);
+                        newRooms.Add(newRoom);
                     }
                 }
             }
         }
+        rooms.AddRange(newRooms);
     }
 
     GameObject GetRandomRoom()

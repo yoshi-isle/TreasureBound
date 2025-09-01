@@ -9,9 +9,9 @@ public class Inventory : MonoBehaviour
     }
 
     [SerializeField]
-    public List<Collectable> Bag = new List<Collectable>();
+    public List<Interactable> Bag = new List<Interactable>();
 
-    private void HandleCollectablePickedUp(Collectable collectable)
+    private void HandleCollectablePickedUp(Interactable collectable)
     {
         if (collectable == null)
         {
