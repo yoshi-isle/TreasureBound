@@ -60,7 +60,6 @@ public class PrefabDungeonGenerator : MonoBehaviour
         currentPlayerObject = player;
         yield return StartCoroutine(BranchRoomOutCoroutine(initialRoom));
 
-        print("done");
         foreach (var room in rooms)
         {
             var unusedConnectors = room.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
@@ -111,8 +110,6 @@ public class PrefabDungeonGenerator : MonoBehaviour
             var newRoomConnectors = newRoom.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
             var newRoomRandomConnector = newRoomConnectors[Random.Range(0, newRoomConnectors.Length)];
             
-            print($"Picked a random connector! {newRoomRandomConnector.transform.position}");
-
             Quaternion targetRotation = item.rotation * Quaternion.Euler(0, 180f, 0);
             newRoom.transform.rotation = targetRotation * Quaternion.Inverse(newRoomRandomConnector.localRotation);
 
@@ -127,12 +124,8 @@ public class PrefabDungeonGenerator : MonoBehaviour
             );
             newRoom.transform.position += randomOffset;
         
-            print($"Placing new room at position: {newRoom.transform.position}");
-            print($"Connector positions - existing: {item.position}, new: {newRoomRandomConnector.position}, offset: {offset}");
-
             if (HasRoomCollision(newRoom))
             {
-                print("Collision detected! Skipping this connector...");
                 Destroy(newRoom);
                 continue;
             }
@@ -177,7 +170,6 @@ public class PrefabDungeonGenerator : MonoBehaviour
             
             if (newBounds.Intersects(existingBounds))
             {
-                print("Room bounds intersect! Collision detected.");
                 return true;
             }
         }

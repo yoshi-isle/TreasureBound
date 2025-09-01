@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,17 +22,6 @@ public class Sentinel : MonoBehaviour
     }
     public States currentState = States.Patrolling;
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (stateChangeCooldown >= 0f) return;
-
-        if (other.CompareTag("Player"))
-        {
-            pointLight.color = Color.red;
-            currentState = States.Chasing;
-            target = other.transform;
-        }
-    }
 
     void OnTriggerExit(Collider other)
     {
@@ -41,7 +31,7 @@ public class Sentinel : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             stateChangeCooldown = 1f;
-            currentState = States.Patrolling;
+            currentState = States.Suspicious;
             target = null;
         }
     }
@@ -49,10 +39,40 @@ public class Sentinel : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         Invoke("InitializePatrol", 1.0f);
+        print("Starting scan coroutine");
+        StartCoroutine(ScanForPlayer());
+    }
+
+    private IEnumerator ScanForPlayer()
+    {
+        print("Scanning for player...");
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            if (currentState == States.Patrolling)
+            {
+                //raycast from the front of the npc (me) to player.
+                //check if there's any blockers in the way
+                RaycastHit hit;
+                Vector3 playerPosition = FindAnyObjectByType<FirstPersonController>().transform.position;
+                Vector3 direction = (playerPosition - transform.position).normalized;
+                if (Physics.Raycast(transform.position, direction, out hit, 8f))
+                {
+                    if (hit.collider.CompareTag("Player"))
+                    {
+                        print("Found.");
+                        pointLight.color = Color.red;
+                        currentState = States.Chasing;
+                        target = hit.collider.transform;
+                    }
+                }
+            }
+        }
     }
 
     void Update()
     {
+        print(susTimer);
         switch (currentState)
         {
             case States.Patrolling:
@@ -69,8 +89,9 @@ public class Sentinel : MonoBehaviour
                 agent.SetDestination(target.position);
                 break;
             case States.Suspicious:
+                pointLight.color = Color.yellow;
                 susTimer += Time.deltaTime;
-                if (susTimer >= 10f)
+                if (susTimer >= 4f)
                 {
                     currentState = States.Patrolling;
                     InitializePatrol();
