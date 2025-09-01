@@ -18,6 +18,7 @@ public class PrefabDungeonGenerator : MonoBehaviour
 
     [SerializeField]
     public List<RoomWeight> roomChanceWeights = new List<RoomWeight>();
+    public List<RoomWeight> endRoomChanceWeights = new List<RoomWeight>();
 
     [System.Serializable]
     public class RoomWeight
@@ -59,7 +60,12 @@ public class PrefabDungeonGenerator : MonoBehaviour
         var player = Instantiate(playerPrefab, new Vector3(0, 3, 0), Quaternion.identity);
         currentPlayerObject = player;
         yield return StartCoroutine(BranchRoomOutCoroutine(initialRoom));
+        FillEndRooms();
+        LockFinalEdges();
+    }
 
+    private void LockFinalEdges()
+    {
         foreach (var room in rooms)
         {
             var unusedConnectors = room.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
@@ -74,9 +80,48 @@ public class PrefabDungeonGenerator : MonoBehaviour
         }
     }
 
+    private void FillEndRooms()
+    {
+        foreach (var room in rooms)
+        {
+            var unusedConnectors = room.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
+            foreach (var connector in unusedConnectors)
+            {
+                var endRoomPrefab = GetRandomEndRoom();
+                if (endRoomPrefab != null)
+                {
+                    var newRoom = PlaceRoomAtConnector(connector, endRoomPrefab);
+                    if (newRoom != null)
+                    {
+                        rooms.Add(newRoom);
+                    }
+                }
+            }
+        }
+    }
+
     GameObject GetRandomRoom()
     {
         var validWeights = roomChanceWeights.Where(rw => rw.room != null).ToList();
+        if (validWeights.Count == 0) return null;
+        var totalWeight = validWeights.Sum(rw => rw.weight);
+        var randomValue = Random.Range(0f, totalWeight);
+        
+        float currentWeight = 0f;
+        foreach (var roomWeight in validWeights)
+        {
+            currentWeight += roomWeight.weight;
+            if (randomValue <= currentWeight)
+            {
+                return roomWeight.room;
+            }
+        }
+        return validWeights.First().room;
+    }
+
+    GameObject GetRandomEndRoom()
+    {
+        var validWeights = endRoomChanceWeights.Where(rw => rw.room != null).ToList();
         if (validWeights.Count == 0) return null;
         var totalWeight = validWeights.Sum(rw => rw.weight);
         var randomValue = Random.Range(0f, totalWeight);
@@ -106,35 +151,13 @@ public class PrefabDungeonGenerator : MonoBehaviour
         {
             var roomPrefab = GetRandomRoom();
             if (roomPrefab == null) continue;
-            var newRoom = Instantiate(roomPrefab, Vector3.zero, Quaternion.identity);
-            var newRoomConnectors = newRoom.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
-            var newRoomRandomConnector = newRoomConnectors[Random.Range(0, newRoomConnectors.Length)];
-            
-            Quaternion targetRotation = item.rotation * Quaternion.Euler(0, 180f, 0);
-            newRoom.transform.rotation = targetRotation * Quaternion.Inverse(newRoomRandomConnector.localRotation);
-
-            Vector3 offset = item.position - newRoomRandomConnector.position;
-            newRoom.transform.position += offset;
-            
-            // Add tiny random offset to prevent Z-fighting
-            Vector3 randomOffset = new Vector3(
-                Random.Range(-0.001f, 0.001f), 
-                Random.Range(-0.001f, 0.001f), 
-                Random.Range(-0.001f, 0.001f)
-            );
-            newRoom.transform.position += randomOffset;
-        
-            if (HasRoomCollision(newRoom))
-            {
-                Destroy(newRoom);
-                continue;
-            }
-            
+            var newRoom = PlaceRoomAtConnector(item, roomPrefab);
+            if (newRoom == null) continue;
             rooms.Add(newRoom);
             newRoom.transform.parent = this.transform;
             
             item.tag = "Processed";
-            newRoomRandomConnector.tag = "Processed";
+            // newRoomRandomConnector.tag = "Processed";
             
             yield return _waitForSeconds0_1;
             
@@ -175,5 +198,53 @@ public class PrefabDungeonGenerator : MonoBehaviour
         }
         
         return false;
+    }
+
+    private GameObject PlaceRoomAtConnector(Transform connector, GameObject roomPrefab)
+    {
+        var newRoom = Instantiate(roomPrefab, Vector3.zero, Quaternion.identity);
+        var newRoomConnectors = newRoom.GetComponentsInChildren<Transform>().Where(x => x.name.Contains("Door") && x.tag == "Untagged").ToArray();
+        if (newRoomConnectors.Length > 0)
+        {
+            var newRoomRandomConnector = newRoomConnectors[Random.Range(0, newRoomConnectors.Length)];
+            
+            Quaternion targetRotation = connector.rotation * Quaternion.Euler(0, 180f, 0);
+            newRoom.transform.rotation = targetRotation * Quaternion.Inverse(newRoomRandomConnector.localRotation);
+            Vector3 offset = connector.position - newRoomRandomConnector.position;
+            newRoom.transform.position += offset;
+            
+            // Add tiny random offset to prevent Z-fighting
+            Vector3 randomOffset = new Vector3(
+                Random.Range(-0.001f, 0.001f), 
+                Random.Range(-0.001f, 0.001f), 
+                Random.Range(-0.001f, 0.001f)
+            );
+            newRoom.transform.position += randomOffset;
+            
+            if (HasRoomCollision(newRoom))
+            {
+                Destroy(newRoom);
+                return null;
+            }
+            
+            newRoom.transform.parent = this.transform;
+            connector.tag = "Processed";
+            newRoomRandomConnector.tag = "Processed";
+        }
+        else
+        {
+            // No connectors, place directly
+            newRoom.transform.position = connector.position;
+            newRoom.transform.rotation = connector.rotation;
+            newRoom.transform.parent = this.transform;
+            connector.tag = "Processed";
+            if (HasRoomCollision(newRoom))
+            {
+                Destroy(newRoom);
+                return null;
+            }
+        }
+        
+        return newRoom;
     }
 }

@@ -16,6 +16,7 @@ public class Sentinel : MonoBehaviour
     private float stateChangeCooldown = 0f;
     public enum States
     {
+        Initializing,
         Patrolling,
         Chasing,
         Suspicious
@@ -70,11 +71,17 @@ public class Sentinel : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        currentState = States.Patrolling;
+    }
+
     void Update()
     {
-        print(susTimer);
         switch (currentState)
         {
+            case States.Initializing:
+                break;
             case States.Patrolling:
                 agent.speed = 3;
                 if (ReachedDestination())
