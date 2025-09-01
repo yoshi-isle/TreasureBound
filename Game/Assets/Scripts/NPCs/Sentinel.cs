@@ -11,6 +11,7 @@ public class Sentinel : MonoBehaviour
     public Transform target;
     public Interactable interactable;
     public Transform[] patrolPoints;
+    public bool reversePatrol = false;
     NavMeshAgent agent;
     private int currentPatrolIndex = 0;
     private float susTimer = 0f;
@@ -40,7 +41,6 @@ public class Sentinel : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        Invoke("InitializePatrol", 1.0f);
         print("Starting scan coroutine");
         StartCoroutine(ScanForPlayer());
     }
@@ -75,6 +75,7 @@ public class Sentinel : MonoBehaviour
     void OnEnable()
     {
         currentState = States.Patrolling;
+        Invoke("InitializePatrol", 1.0f);
     }
 
     void Update()
@@ -112,7 +113,14 @@ public class Sentinel : MonoBehaviour
     private void PatrolNextPoint()
     {
         if (patrolPoints == null || patrolPoints.Length == 0) return;
-        currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+        if (reversePatrol)
+        {
+            currentPatrolIndex = (currentPatrolIndex - 1 + patrolPoints.Length) % patrolPoints.Length;
+        }
+        else
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+        }
         agent.SetDestination(patrolPoints[currentPatrolIndex].position);
     }
 
@@ -137,15 +145,31 @@ public class Sentinel : MonoBehaviour
                 }
             }
             // Set to first valid patrol point
-            currentPatrolIndex = 0;
-            var firstValid = patrolPoints.FirstOrDefault(p => p != null);
-            if (firstValid != null)
+            if (reversePatrol)
             {
-                agent.SetDestination(firstValid.position);
+                currentPatrolIndex = patrolPoints.Length - 1;
+                var lastValid = patrolPoints.LastOrDefault(p => p != null);
+                if (lastValid != null)
+                {
+                    agent.SetDestination(lastValid.position);
+                }
+                else
+                {
+                    Debug.LogWarning("No valid patrol points to set as destination.");
+                }
             }
             else
             {
-                Debug.LogWarning("No valid patrol points to set as destination.");
+                currentPatrolIndex = 0;
+                var firstValid = patrolPoints.FirstOrDefault(p => p != null);
+                if (firstValid != null)
+                {
+                    agent.SetDestination(firstValid.position);
+                }
+                else
+                {
+                    Debug.LogWarning("No valid patrol points to set as destination.");
+                }
             }
         }
         else

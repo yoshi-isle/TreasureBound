@@ -570,7 +570,7 @@ MonoBehaviour:
   rooms: []
   roomChanceWeights:
   - room: {fileID: 4578506221600808690, guid: 9b76ebc2f1b914f27a6b60fddc5fac60, type: 3}
-    weight: 2
+    weight: 6
   - room: {fileID: 2500337851986639658, guid: 7ef5dd966ae99a0489b693fe3936df3b, type: 3}
     weight: 10
   - room: {fileID: 5226643468120902408, guid: 31d72a85f9c81474988338ee5590c11b, type: 3}
@@ -907,7 +907,7 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 2.6611042
+  m_InnerSpotPercent: 2.1215465
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -1041,9 +1041,9 @@ Light:
   serializedVersion: 11
   m_Type: 0
   m_Color: {r: 1, g: 0.97039664, b: 0.9198113, a: 1}
-  m_Intensity: 104862.26
+  m_Intensity: 66994.17
   m_Range: 134.16
-  m_SpotAngle: 37.578384
+  m_SpotAngle: 47.13543
   m_InnerSpotAngle: 12.790501
   m_CookieSize: 10
   m_Shadows:
