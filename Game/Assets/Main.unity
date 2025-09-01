@@ -775,8 +775,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Game Over
 
-
-    You were caught by the dungeon guardian...'
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d1d41635ae3614118bb882de3708319c, type: 2}
   m_sharedMaterial: {fileID: 6498904021798230936, guid: d1d41635ae3614118bb882de3708319c, type: 2}
@@ -785,8 +784,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190335
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
