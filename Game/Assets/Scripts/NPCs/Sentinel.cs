@@ -98,7 +98,6 @@ public class Sentinel : MonoBehaviour
                 agent.SetDestination(target.position);
                 break;
             case States.Suspicious:
-                pointLight.color = Color.yellow;
                 susTimer += Time.deltaTime;
                 if (susTimer >= 4f)
                 {

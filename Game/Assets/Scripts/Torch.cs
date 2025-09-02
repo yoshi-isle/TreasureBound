@@ -9,6 +9,10 @@ public class Torch : MonoBehaviour
     public float screenY = 0.1f;
     public float distanceFromCamera = 2f;
     
+    [Header("Wall Detection")]
+    public LayerMask wallLayerMask = -1;
+    public float minDistanceFromWall = 0.5f;
+    
     private Camera parentCamera;
     
     void Start()

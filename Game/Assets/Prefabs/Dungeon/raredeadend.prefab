@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2166988882906241}
   - component: {fileID: 5856102987404024735}
   - component: {fileID: 7025276299943951928}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Spot Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 9001780492850012633}
   - component: {fileID: 4318853071180382167}
   - component: {fileID: 8162577010369456147}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -491,7 +491,7 @@ GameObject:
   - component: {fileID: 3034836929314261691}
   - component: {fileID: 6410446636955311095}
   - component: {fileID: 5965550105986656902}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Spot Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -796,9 +796,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: raredeadend
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1deccffc6d08e3840b8547f69ae207e9, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5148817236446094103, guid: 1deccffc6d08e3840b8547f69ae207e9, type: 3}
       propertyPath: m_Name
       value: Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148817236446094103, guid: 1deccffc6d08e3840b8547f69ae207e9, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -933,6 +941,10 @@ PrefabInstance:
     - target: {fileID: 4299991687908831434, guid: 76897781ea3e94be58b413f58931d731, type: 3}
       propertyPath: m_Name
       value: Item Spawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299991687908831434, guid: 76897781ea3e94be58b413f58931d731, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2459133180985211060, guid: 76897781ea3e94be58b413f58931d731, type: 3}

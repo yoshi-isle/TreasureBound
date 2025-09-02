@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8068073526183931155, guid: c3d006b55c27ffe4ab47ed82e09d2db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: -7681799794947180530, guid: c3d006b55c27ffe4ab47ed82e09d2db5, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0
@@ -112,6 +116,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: 4way
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c3d006b55c27ffe4ab47ed82e09d2db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2674951466746616315, guid: c3d006b55c27ffe4ab47ed82e09d2db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092708244707826562, guid: c3d006b55c27ffe4ab47ed82e09d2db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6601979539629054067, guid: c3d006b55c27ffe4ab47ed82e09d2db5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -120,6 +136,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 0fbcc891f6f254e26ab989bad3f26fa4, type: 2}
+    - target: {fileID: 7729579198571538838, guid: c3d006b55c27ffe4ab47ed82e09d2db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617835151230357669, guid: c3d006b55c27ffe4ab47ed82e09d2db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

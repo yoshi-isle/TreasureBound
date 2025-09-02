@@ -90,7 +90,6 @@ public class FirstPersonController : MonoBehaviour
             }
             else
             {
-                // If we had a collectable before, trigger the unfocused event
                 if (currentInteractableFocused != null)
                 {
                     GameManager.Instance?.TriggerInteractableUnfocused();
@@ -172,7 +171,6 @@ public class FirstPersonController : MonoBehaviour
         }
 
         Vector3 velocity = move * targetSpeed;
-        // If airborne, reduce movement speed unless sprint-jumping forward
         if (!characterController.isGrounded)
         {
             if (!(isSprinting && inputDir.z > 0.1f && Mathf.Abs(inputDir.x) < 0.1f))
@@ -180,7 +178,15 @@ public class FirstPersonController : MonoBehaviour
             velocity *= 0.6f;
             }
         }
-        characterController.Move((velocity + new Vector3(0, playerVelocity.y, 0)) * Time.deltaTime);
+        
+        Vector3 finalMovement = (velocity + new Vector3(0, playerVelocity.y, 0)) * Time.deltaTime;
+        
+        CollisionFlags collisionFlags = characterController.Move(finalMovement);
+        
+        if ((collisionFlags & CollisionFlags.Sides) != 0)
+        {
+            velocity = Vector3.zero;
+        }
     }
 
     void LateUpdate()
