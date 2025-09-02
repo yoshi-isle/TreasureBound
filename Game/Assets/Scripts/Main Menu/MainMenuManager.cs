@@ -52,14 +52,16 @@ public class MainMenuManager : MonoBehaviour
     {
         var fileName = "savefile-" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
         string json = JsonUtility.ToJson(new PlayerSaveData(fileName));
-        System.IO.File.WriteAllText(Application.persistentDataPath + "/" + fileName + ".json", json);
+        string assetPath = Application.dataPath;
+        System.IO.File.WriteAllText(assetPath + "/" + fileName + ".json", json);
         GameManager.Instance.CurrentSaveData = new PlayerSaveData(fileName);
         SceneManager.LoadScene("Main");
     }
 
     bool TryToFindSaveFiles()
     {
-        string[] files = System.IO.Directory.GetFiles(Application.persistentDataPath, "savefile-*.json");
+    string assetPath = Application.dataPath;
+    string[] files = System.IO.Directory.GetFiles(assetPath, "savefile-*.json");
         foreach (string file in files)
         {
             Debug.Log("Found save file: " + file);

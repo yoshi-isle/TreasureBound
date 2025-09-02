@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerSaveData;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     public event System.Action OnGameRestart;
     public event Action OnDungeonGenerated;
     public event Action<List<Interactable>> OnLevelComplete;
+    public event Action<List<Interactable>> OnGameQuit;
 
     public void TriggerInteractableFocused(Interactable interactable, Vector3 hitPoint)
     {
@@ -66,4 +68,37 @@ public class GameManager : MonoBehaviour
         currentFloor++;
         OnLevelComplete?.Invoke(interactables);
     }
+
+    public void TriggerOnGameQuit(List<Interactable> collectedItems)
+    {
+        foreach (var item in collectedItems)
+        {
+            ItemEntry entry = new()
+            {
+                itemId = Items.ItemIndex[item.Name],
+                count = 1
+            };
+            int index = CurrentSaveData.CollectedItems.FindIndex(e => e.itemId == entry.itemId);
+            if (index != -1)
+            {
+                var temp = CurrentSaveData.CollectedItems[index];
+                temp.count++;
+                CurrentSaveData.CollectedItems[index] = temp;
+            }
+            else
+            {
+                CurrentSaveData.CollectedItems.Add(entry);
+            }
+        }
+
+        var file = CurrentSaveData.FileName + ".json";
+        string json = JsonUtility.ToJson(CurrentSaveData);
+
+        string filePath = Application.dataPath + "/" + file;
+        System.IO.File.WriteAllText(filePath, json);
+        Debug.Log($"Save file path: {filePath}");
+
+        OnGameQuit?.Invoke(collectedItems);
+    }
+
 }
