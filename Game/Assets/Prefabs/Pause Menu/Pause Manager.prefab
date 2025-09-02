@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &403586111700072467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6388870981675958546}
+  - component: {fileID: 2977297770729173205}
+  m_Layer: 0
+  m_Name: Pause Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6388870981675958546
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403586111700072467}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.66989, y: 0.5, z: -0.16448}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2977297770729173205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403586111700072467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 284722911638980449a75e65e18dc8b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseManager
+  gameState: 0
+  mainGameCanvasPrefab: {fileID: 3201858692822889969, guid: c1479c71b5e604bffaa8f548708d98a5, type: 3}
+  pauseMenuCanvasPrefab: {fileID: 654888571453732375, guid: fede5ecc355044744803a8b9ee55b96a, type: 3}
+  gameOverCanvasPrefab: {fileID: 8475024117981098335, guid: af0f5b38a5e654645bad95ea356bea3a, type: 3}
+  loadingCanvasPrefab: {fileID: 2697222941648047794, guid: 65f567e21b53542de81f11ef5411b065, type: 3}
+  pendingItemGrid: {fileID: 6527685266032995032, guid: ec991b2cf22394ec18e52e683282913d, type: 3}
+  pendingItemBox: {fileID: 451208462543562371, guid: 7ea1b14b8791f4c7c97ddd63a86a83d5, type: 3}
+  m_RestartGame: {fileID: 3196571815959995989, guid: 13313a534c11e4933a6848d29cd7f86f, type: 3}

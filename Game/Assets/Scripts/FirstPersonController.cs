@@ -21,6 +21,7 @@ public class FirstPersonController : MonoBehaviour
     private Vector3 playerVelocity;
     public Interactable currentInteractableFocused;
     private Inventory inventory;
+    private PauseManager pauseManager;
     public enum PlayerState
     {
         Normal,
@@ -38,7 +39,7 @@ public class FirstPersonController : MonoBehaviour
     {
         GameManager.Instance.OnGameRestart += () => playerState = PlayerState.Normal;
         GameManager.Instance.OnPlayerDead += () => playerState = PlayerState.Inactive;
-
+        pauseManager = GameObject.Find("Pause Manager")?.GetComponent<PauseManager>();
         characterController = GetComponent<CharacterController>();
         cameraTransform = Camera.main.transform;
         Cursor.lockState = CursorLockMode.Locked;
@@ -47,7 +48,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
-        switch (PauseManager.Instance.gameState)
+        switch (pauseManager.gameState)
         {
             case PauseManager.GameState.Normal:
                 playerState = PlayerState.Normal;
